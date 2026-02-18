@@ -19,6 +19,11 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 
 export interface NavMainProps {
   items: {
@@ -26,6 +31,8 @@ export interface NavMainProps {
     url: string
     icon?: LucideIcon
     isActive?: boolean
+    roles?: string[]
+    tooltip?: string
     items?: { title: string; url: string; isActive?: boolean }[]
   }[]
   /** Optional group label rendered above the nav items */
@@ -87,12 +94,48 @@ export function NavMain({
               </Collapsible>
             ) : (
               <SidebarMenuItem key={item.title}>
-                <SidebarMenuButton tooltip={item.title} asChild isActive={item.isActive}>
-                  <LinkComponent href={item.url}>
-                    {item.icon && <item.icon />}
-                    <span>{item.title}</span>
-                  </LinkComponent>
-                </SidebarMenuButton>
+                {item.tooltip ? (
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <SidebarMenuButton asChild isActive={item.isActive}>
+                        <LinkComponent href={item.url}>
+                          {item.icon && <item.icon />}
+                          <span>{item.title}</span>
+                          {item.roles && item.roles.length > 0 && (
+                            <div className="ml-auto flex items-center gap-1">
+                              {item.roles.includes("Broker") && (
+                                <span className="h-1.5 w-1.5 rounded-full bg-purple-600" />
+                              )}
+                              {item.roles.includes("Lender") && (
+                                <span className="h-1.5 w-1.5 rounded-full bg-blue-600" />
+                              )}
+                            </div>
+                          )}
+                        </LinkComponent>
+                      </SidebarMenuButton>
+                    </TooltipTrigger>
+                    <TooltipContent side="right" className="max-w-xs">
+                      {item.tooltip}
+                    </TooltipContent>
+                  </Tooltip>
+                ) : (
+                  <SidebarMenuButton asChild isActive={item.isActive}>
+                    <LinkComponent href={item.url}>
+                      {item.icon && <item.icon />}
+                      <span>{item.title}</span>
+                      {item.roles && item.roles.length > 0 && (
+                        <div className="ml-auto flex items-center gap-1">
+                          {item.roles.includes("Broker") && (
+                            <span className="h-1.5 w-1.5 rounded-full bg-purple-600" />
+                          )}
+                          {item.roles.includes("Lender") && (
+                            <span className="h-1.5 w-1.5 rounded-full bg-blue-600" />
+                          )}
+                        </div>
+                      )}
+                    </LinkComponent>
+                  </SidebarMenuButton>
+                )}
               </SidebarMenuItem>
             )
           )}

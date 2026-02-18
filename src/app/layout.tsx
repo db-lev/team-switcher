@@ -5,6 +5,7 @@ import { ClientLayout } from "@/components/client-layout";
 import { teams } from "@/components/app-sidebar";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { TeamProvider } from "@/contexts/team-context";
+import { ActiveUserProvider } from "@/contexts/active-user-context";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,11 +33,13 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <TeamProvider defaultTeam={teams[0]}>
-          <TooltipProvider>
-            <ClientLayout>
-              {children}
-            </ClientLayout>
-          </TooltipProvider>
+          <ActiveUserProvider>
+            <TooltipProvider>
+              <ClientLayout>
+                {children}
+              </ClientLayout>
+            </TooltipProvider>
+          </ActiveUserProvider>
         </TeamProvider>
       </body>
     </html>
