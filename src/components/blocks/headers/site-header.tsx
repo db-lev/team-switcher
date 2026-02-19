@@ -2,6 +2,7 @@ import * as React from "react"
 
 import { Separator } from "@/components/ui/separator"
 import { SidebarTrigger } from "@/components/ui/sidebar"
+import { HowToReadSheet } from "@/components/how-to-read-sheet"
 
 export interface SiteHeaderProps {
   /** Simple page title. If children is provided, this is ignored. */
@@ -34,11 +35,10 @@ export function SiteHeader({ title, children, actions }: SiteHeaderProps) {
             <h1 className="text-base font-medium">{title}</h1>
           </>
         ) : null}
-        {actions && (
-          <div className="ml-auto flex items-center gap-2">
-            {actions}
-          </div>
-        )}
+        <div className="ml-auto flex items-center gap-2">
+          {actions}
+          <HowToReadSheet />
+        </div>
       </div>
     </header>
   )
