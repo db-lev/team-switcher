@@ -104,10 +104,10 @@ export function NavMain({
                           {item.roles && item.roles.length > 0 && (
                             <div className="ml-auto flex items-center gap-1">
                               {item.roles.includes("Broker") && (
-                                <span className="h-1.5 w-1.5 rounded-full bg-purple-600" />
+                                <span className="h-1.5 w-1.5 rounded-full bg-[#3E9B70]" />
                               )}
                               {item.roles.includes("Lender") && (
-                                <span className="h-1.5 w-1.5 rounded-full bg-blue-600" />
+                                <span className="h-1.5 w-1.5 rounded-full bg-[#3880E8]" />
                               )}
                             </div>
                           )}
@@ -126,10 +126,10 @@ export function NavMain({
                       {item.roles && item.roles.length > 0 && (
                         <div className="ml-auto flex items-center gap-1">
                           {item.roles.includes("Broker") && (
-                            <span className="h-1.5 w-1.5 rounded-full bg-purple-600" />
+                            <span className="h-1.5 w-1.5 rounded-full bg-[#3E9B70]" />
                           )}
                           {item.roles.includes("Lender") && (
-                            <span className="h-1.5 w-1.5 rounded-full bg-blue-600" />
+                            <span className="h-1.5 w-1.5 rounded-full bg-[#3880E8]" />
                           )}
                         </div>
                       )}

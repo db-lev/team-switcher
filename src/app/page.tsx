@@ -12,16 +12,31 @@ import avatar5 from "@/components/avatars/avatar_5.png"
 export default function DashboardPage() {
   const { activeTeam } = useTeam()
 
-  // Default to Myers Capital if no activeTeam
-  const teamName = activeTeam?.name || "Myers Capital"
+  const useCase = activeTeam?.useCase || 'BWE'
+  const designOption = activeTeam?.designOption || 2
+
+  // Map use case + design option to component
+  const getUseCaseComponent = () => {
+    const key = `${useCase}-${designOption}`
+    const components: Record<string, () => JSX.Element> = {
+      'BWE-1': BWEDesignOption1,
+      'BWE-2': BWEDesignOption2,
+      'BWE-3': BWEDesignOption3,
+      'Convoy-1': ConvoyDesignOption1,
+      'Convoy-2': ConvoyDesignOption2,
+      'Convoy-3': ConvoyDesignOption3,
+      'Leverage-1': LeverageDesignOption1,
+      'Leverage-2': LeverageDesignOption2,
+      'Leverage-3': LeverageDesignOption3,
+    }
+    return components[key] || BWEDesignOption2
+  }
+
+  const UseCaseComponent = getUseCaseComponent()
 
   return (
     <div className="flex flex-1 flex-col gap-6 p-6">
-      {teamName === "Myers Capital" && <MyersCapitalUseCase />}
-      {teamName === "Heritage Bank NA" && <HeritageBankUseCase />}
-      {teamName === "Leverage Companies" && <LeverageCompaniesUseCase />}
-      {teamName === "Northmarq" && <NorthmarqUseCase />}
-      {teamName === "BWE" && <BWEUseCase />}
+      <UseCaseComponent />
     </div>
   )
 }
@@ -41,11 +56,11 @@ function MyersCapitalUseCase() {
         </div>
         <div className="flex gap-2">
           <span className="inline-flex h-6 items-center gap-1.5 rounded-full border px-3 text-xs font-medium">
-            <span className="h-1.5 w-1.5 rounded-full bg-blue-600" />
+            <span className="h-1.5 w-1.5 rounded-full bg-[#3880E8]" />
             Lender
           </span>
           <span className="inline-flex h-6 items-center gap-1.5 rounded-full border px-3 text-xs font-medium">
-            <span className="h-1.5 w-1.5 rounded-full bg-purple-600" />
+            <span className="h-1.5 w-1.5 rounded-full bg-[#3E9B70]" />
             Broker
           </span>
         </div>
@@ -65,7 +80,7 @@ function MyersCapitalUseCase() {
                 <div className="flex items-center gap-2">
                   <span className="text-sm font-semibold">Myers Capital Lending</span>
                   <span className="inline-flex h-5 items-center gap-1.5 rounded-full border px-2 text-xs font-medium">
-                    <span className="h-1.5 w-1.5 rounded-full bg-blue-600" />
+                    <span className="h-1.5 w-1.5 rounded-full bg-[#3880E8]" />
                     Lender
                   </span>
                 </div>
@@ -86,7 +101,7 @@ function MyersCapitalUseCase() {
                 <div className="flex items-center gap-2">
                   <span className="text-sm font-semibold">Myers Capital Brokerage</span>
                   <span className="inline-flex h-5 items-center gap-1.5 rounded-full border px-2 text-xs font-medium">
-                    <span className="h-1.5 w-1.5 rounded-full bg-purple-600" />
+                    <span className="h-1.5 w-1.5 rounded-full bg-[#3E9B70]" />
                     Broker
                   </span>
                 </div>
@@ -125,7 +140,7 @@ function MyersCapitalUseCase() {
               <div className="flex items-center gap-2">
                 <span className="text-xs font-normal text-muted-foreground">User Profile</span>
                 <span className="inline-flex h-5 items-center gap-1.5 rounded-full border px-2 text-xs font-medium">
-                  <span className="h-1.5 w-1.5 rounded-full bg-blue-600" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#3880E8]" />
                   Lender
                 </span>
               </div>
@@ -155,7 +170,7 @@ function MyersCapitalUseCase() {
               <div className="flex items-center gap-2">
                 <span className="text-xs font-normal text-muted-foreground">User Profile</span>
                 <span className="inline-flex h-5 items-center gap-1.5 rounded-full border px-2 text-xs font-medium">
-                  <span className="h-1.5 w-1.5 rounded-full bg-purple-600" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#3E9B70]" />
                   Broker
                 </span>
               </div>
@@ -213,11 +228,11 @@ function HeritageBankUseCase() {
         </div>
         <div className="flex gap-2">
           <span className="inline-flex h-6 items-center gap-1.5 rounded-full border px-3 text-xs font-medium">
-            <span className="h-1.5 w-1.5 rounded-full bg-blue-600" />
+            <span className="h-1.5 w-1.5 rounded-full bg-[#3880E8]" />
             Lender
           </span>
           <span className="inline-flex h-6 items-center gap-1.5 rounded-full border px-3 text-xs font-medium">
-            <span className="h-1.5 w-1.5 rounded-full bg-purple-600" />
+            <span className="h-1.5 w-1.5 rounded-full bg-[#3E9B70]" />
             Broker
           </span>
         </div>
@@ -249,7 +264,7 @@ function HeritageBankUseCase() {
               <div className="flex items-center gap-2">
                 <span className="text-xs font-normal text-muted-foreground">User Profile</span>
                 <span className="inline-flex h-5 items-center gap-1.5 rounded-full border px-2 text-xs font-medium">
-                  <span className="h-1.5 w-1.5 rounded-full bg-purple-600" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#3E9B70]" />
                   Broker
                 </span>
               </div>
@@ -307,7 +322,7 @@ function LeverageCompaniesUseCase() {
         </div>
         <div className="flex gap-2">
           <span className="inline-flex h-6 items-center gap-1.5 rounded-full border px-3 text-xs font-medium">
-            <span className="h-1.5 w-1.5 rounded-full bg-blue-600" />
+            <span className="h-1.5 w-1.5 rounded-full bg-[#3880E8]" />
             Lender
           </span>
         </div>
@@ -339,7 +354,7 @@ function LeverageCompaniesUseCase() {
               <div className="flex items-center gap-2">
                 <span className="text-xs font-normal text-muted-foreground">User Profile</span>
                 <span className="inline-flex h-5 items-center gap-1.5 rounded-full border px-2 text-xs font-medium">
-                  <span className="h-1.5 w-1.5 rounded-full bg-blue-600" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#3880E8]" />
                   Lender
                 </span>
               </div>
@@ -369,7 +384,7 @@ function LeverageCompaniesUseCase() {
               <div className="flex items-center gap-2">
                 <span className="text-xs font-normal text-muted-foreground">User Profile</span>
                 <span className="inline-flex h-5 items-center gap-1.5 rounded-full border px-2 text-xs font-medium">
-                  <span className="h-1.5 w-1.5 rounded-full bg-blue-600" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#3880E8]" />
                   Lender
                 </span>
               </div>
@@ -424,11 +439,11 @@ function NorthmarqUseCase() {
         </div>
         <div className="flex gap-2">
           <span className="inline-flex h-6 items-center gap-1.5 rounded-full border px-3 text-xs font-medium">
-            <span className="h-1.5 w-1.5 rounded-full bg-purple-600" />
+            <span className="h-1.5 w-1.5 rounded-full bg-[#3E9B70]" />
             Broker
           </span>
           <span className="inline-flex h-6 items-center gap-1.5 rounded-full border px-3 text-xs font-medium">
-            <span className="h-1.5 w-1.5 rounded-full bg-blue-600" />
+            <span className="h-1.5 w-1.5 rounded-full bg-[#3880E8]" />
             Lender
           </span>
         </div>
@@ -448,7 +463,7 @@ function NorthmarqUseCase() {
                 <div className="flex items-center gap-2">
                   <span className="text-sm font-semibold">Northmarq Brokerage</span>
                   <span className="inline-flex h-5 items-center gap-1.5 rounded-full border px-2 text-xs font-medium">
-                    <span className="h-1.5 w-1.5 rounded-full bg-purple-600" />
+                    <span className="h-1.5 w-1.5 rounded-full bg-[#3E9B70]" />
                     Broker
                   </span>
                 </div>
@@ -469,7 +484,7 @@ function NorthmarqUseCase() {
                 <div className="flex items-center gap-2">
                   <span className="text-sm font-semibold">Northmarq Lending</span>
                   <span className="inline-flex h-5 items-center gap-1.5 rounded-full border px-2 text-xs font-medium">
-                    <span className="h-1.5 w-1.5 rounded-full bg-blue-600" />
+                    <span className="h-1.5 w-1.5 rounded-full bg-[#3880E8]" />
                     Lender
                   </span>
                 </div>
@@ -508,7 +523,7 @@ function NorthmarqUseCase() {
               <div className="flex items-center gap-2">
                 <span className="text-xs font-normal text-muted-foreground">User Profile</span>
                 <span className="inline-flex h-5 items-center gap-1.5 rounded-full border px-2 text-xs font-medium">
-                  <span className="h-1.5 w-1.5 rounded-full bg-purple-600" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#3E9B70]" />
                   Broker
                 </span>
               </div>
@@ -519,7 +534,7 @@ function NorthmarqUseCase() {
               <div className="flex items-center gap-2">
                 <span className="text-xs font-normal text-muted-foreground">User Profile</span>
                 <span className="inline-flex h-5 items-center gap-1.5 rounded-full border px-2 text-xs font-medium">
-                  <span className="h-1.5 w-1.5 rounded-full bg-blue-600" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#3880E8]" />
                   Lender
                 </span>
               </div>
@@ -552,8 +567,12 @@ function NorthmarqUseCase() {
   )
 }
 
-// BWE Use Case
-function BWEUseCase() {
+// ============================================================================
+// DESIGN OPTION 1: PROFILE SWITCHER
+// ============================================================================
+
+// BWE Design Option 1 - Profile Switcher
+function BWEDesignOption1() {
   return (
     <>
       {/* Header */}
@@ -561,18 +580,15 @@ function BWEUseCase() {
         <div className="flex flex-col gap-2">
           <span className="font-mono text-xs font-semibold uppercase tracking-wider text-muted-foreground">Organization</span>
           <h1 className="text-2xl font-semibold">BWE</h1>
-          <p className="text-muted-foreground">
-            Lender transitioning to broker - role evolution challenge
-          </p>
         </div>
         <div className="flex gap-2">
           <span className="inline-flex h-6 items-center gap-1.5 rounded-full border px-3 text-xs font-medium">
-            <span className="h-1.5 w-1.5 rounded-full bg-blue-600" />
-            Lender
+            <span className="h-1.5 w-1.5 rounded-full bg-[#3E9B70]" />
+            Broker
           </span>
           <span className="inline-flex h-6 items-center gap-1.5 rounded-full border px-3 text-xs font-medium">
-            <span className="h-1.5 w-1.5 rounded-full bg-purple-600" />
-            Broker
+            <span className="h-1.5 w-1.5 rounded-full bg-[#3880E8]" />
+            Lender
           </span>
         </div>
       </div>
@@ -581,27 +597,6 @@ function BWEUseCase() {
       <div>
         <span className="mb-4 block font-mono text-xs font-semibold uppercase tracking-wider text-muted-foreground">Accounts</span>
         <div className="grid gap-3 md:grid-cols-2">
-          {/* BWE Lending Account */}
-          <div className="rounded-lg border bg-card">
-            <div className="flex items-center gap-3 p-2">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-muted">
-                <Landmark className="h-4 w-4" />
-              </div>
-              <div className="flex flex-1 flex-col gap-0.5">
-                <div className="flex items-center gap-2">
-                  <span className="text-sm font-semibold">BWE Lending</span>
-                  <span className="inline-flex h-5 items-center gap-1.5 rounded-full border px-2 text-xs font-medium">
-                    <span className="h-1.5 w-1.5 rounded-full bg-blue-600" />
-                    Lender
-                  </span>
-                </div>
-                <span className="text-xs text-muted-foreground">
-                  Original account. Receives inbound placements and manages direct lending pipeline.
-                </span>
-              </div>
-            </div>
-          </div>
-
           {/* BWE Brokerage Account */}
           <div className="rounded-lg border bg-card">
             <div className="flex items-center gap-3 p-2">
@@ -612,12 +607,33 @@ function BWEUseCase() {
                 <div className="flex items-center gap-2">
                   <span className="text-sm font-semibold">BWE Brokerage</span>
                   <span className="inline-flex h-5 items-center gap-1.5 rounded-full border px-2 text-xs font-medium">
-                    <span className="h-1.5 w-1.5 rounded-full bg-purple-600" />
+                    <span className="h-1.5 w-1.5 rounded-full bg-[#3E9B70]" />
                     Broker
                   </span>
                 </div>
                 <span className="text-xs text-muted-foreground">
-                  New account being evaluated. Manages outreach campaigns and placements for deals BWE brokers to other lenders.
+                  Primary brokerage account for running outreach campaigns and managing placements to external lenders.
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* BWE Lending Account */}
+          <div className="rounded-lg border bg-card">
+            <div className="flex items-center gap-3 p-2">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-muted">
+                <Landmark className="h-4 w-4" />
+              </div>
+              <div className="flex flex-1 flex-col gap-0.5">
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-semibold">BWE Lending</span>
+                  <span className="inline-flex h-5 items-center gap-1.5 rounded-full border px-2 text-xs font-medium">
+                    <span className="h-1.5 w-1.5 rounded-full bg-[#3880E8]" />
+                    Lender
+                  </span>
+                </div>
+                <span className="text-xs text-muted-foreground">
+                  Receives inbound placements from other brokers when BWE provides direct financing for deals.
                 </span>
               </div>
             </div>
@@ -643,7 +659,7 @@ function BWEUseCase() {
             <div className="border-t" />
             <div className="bg-background p-2">
               <p className="text-xs leading-relaxed text-muted-foreground">
-                Originally in Lev as a lender contact. BWE is now evaluating brokerage capabilities, requiring Graham to gain broker access without creating a new account.
+                User across both accounts. Uses mode switcher in sidebar footer to toggle between Broker Mode (BWE Brokerage features) and Lender Mode (BWE Lending features).
               </p>
             </div>
             <div className="border-t" />
@@ -651,22 +667,649 @@ function BWEUseCase() {
               <div className="flex items-center gap-2">
                 <span className="text-xs font-normal text-muted-foreground">User Profile</span>
                 <span className="inline-flex h-5 items-center gap-1.5 rounded-full border px-2 text-xs font-medium">
-                  <span className="h-1.5 w-1.5 rounded-full bg-blue-600" />
-                  Lender
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#3E9B70]" />
+                  Broker
                 </span>
               </div>
-              <span className="text-xs text-muted-foreground">BWE Lending</span>
+              <span className="text-xs text-muted-foreground">BWE Brokerage</span>
             </div>
             <div className="border-t" />
             <div className="flex items-center justify-between bg-muted/50 px-2 py-1.5">
               <div className="flex items-center gap-2">
                 <span className="text-xs font-normal text-muted-foreground">User Profile</span>
                 <span className="inline-flex h-5 items-center gap-1.5 rounded-full border px-2 text-xs font-medium">
-                  <span className="h-1.5 w-1.5 rounded-full bg-purple-600" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#3880E8]" />
+                  Lender
+                </span>
+              </div>
+              <span className="text-xs text-muted-foreground">BWE Lending</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* The Use Case */}
+      <div>
+        <span className="mb-4 block font-mono text-xs font-semibold uppercase tracking-wider text-muted-foreground">The Use Case</span>
+        <div className="flex flex-col gap-3">
+          <h3 className="text-lg font-medium">Lender who also acts as broker - dual role evolution within one organization</h3>
+          <div className="space-y-3 text-sm text-muted-foreground leading-relaxed">
+            <p>
+              BWE is an Enterprise customer that operates as both a lender and a broker. Very often they have deals sent to them, the deal doesn't fit their bucket, and they then try to broker it out to other lenders. Graham Gilreath's email (graham.gilreath@bwe.com) was already in Lev as a lender contact when BWE began evaluating the platform for brokerage services.
+            </p>
+            <p>
+              To handle this, we create a 2nd account for BWE's Brokerage division, and Graham belongs to both accounts via separate User Profiles. This allows Graham to work on brokered deals—running outreach campaigns and managing placements to external lenders—while also receiving and evaluating inbound placements when other brokers send deals to BWE for direct financing.
+            </p>
+            <p>
+              <strong>How Profile Switcher works:</strong> Graham uses the mode switcher in the sidebar footer to toggle between Broker Mode and Lender Mode. This switches which account he's operating under—all the data changes.
+            </p>
+            <p>
+              <strong>In Broker Mode (BWE Brokerage account):</strong> Sidebar shows Create Deal, Deals, Network, Market, Files, and Vaults. ALL data shown is from the BWE Brokerage account only—his broker deals, broker network contacts, broker files, vaults shared with the brokerage account.
+            </p>
+            <p>
+              <strong>In Lender Mode (BWE Lending account):</strong> Sidebar shows only Network and Vaults. ALL data shown is from the BWE Lending account only—lender network contacts, vaults shared with the lending account. Broker features (Deals, Market, Files, Create Deal) are completely hidden because lenders don't use those features.
+            </p>
+            <p>
+              <strong>Key limitation:</strong> Graham can't see data from both accounts simultaneously. When he's in Broker Mode looking at his broker deals, he can't see his lender network contacts at the same time. He must switch modes to view different account data. This is the simplest implementation but requires manual mode switching to move between account contexts.
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </>
+  )
+}
+
+// Convoy Design Option 1 - Profile Switcher
+function ConvoyDesignOption1() {
+  return (
+    <>
+      {/* Header */}
+      <div className="flex items-start justify-between">
+        <div className="flex flex-col gap-2">
+          <span className="font-mono text-xs font-semibold uppercase tracking-wider text-muted-foreground">Organization</span>
+          <h1 className="text-2xl font-semibold">Convoy Capital</h1>
+        </div>
+        <div className="flex gap-2">
+          <span className="inline-flex h-6 items-center gap-1.5 rounded-full border px-3 text-xs font-medium">
+            <span className="h-1.5 w-1.5 rounded-full bg-[#3E9B70]" />
+            Broker
+          </span>
+        </div>
+      </div>
+
+      {/* Account */}
+      <div>
+        <span className="mb-4 block font-mono text-xs font-semibold uppercase tracking-wider text-muted-foreground">Account</span>
+        <div className="grid gap-3 md:grid-cols-2">
+          <div className="rounded-lg border bg-card">
+            <div className="flex items-center gap-3 p-2">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-muted">
+                <Briefcase className="h-4 w-4" />
+              </div>
+              <div className="flex flex-1 flex-col gap-0.5">
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-semibold">Convoy Capital - Tyler's Team</span>
+                  <span className="inline-flex h-5 items-center gap-1.5 rounded-full border px-2 text-xs font-medium">
+                    <span className="h-1.5 w-1.5 rounded-full bg-[#3E9B70]" />
+                    Broker
+                  </span>
+                </div>
+                <span className="text-xs text-muted-foreground">
+                  One of 8 separate broker teams. Data is isolated but teams can collaborate on co-brokered deals.
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* User */}
+      <div>
+        <span className="mb-4 block font-mono text-xs font-semibold uppercase tracking-wider text-muted-foreground">User</span>
+        <div className="grid gap-3 md:grid-cols-2">
+          <div className="rounded-lg border bg-card">
+            <div className="flex items-center gap-3 p-2">
+              <div className="h-10 w-10 shrink-0 overflow-hidden rounded-full">
+                <Image src={avatar2} alt="Tyler Bradford" width={40} height={40} className="h-full w-full object-cover" />
+              </div>
+              <div className="flex flex-1 flex-col gap-0.5">
+                <span className="text-sm font-semibold">Tyler Bradford</span>
+                <span className="text-xs text-muted-foreground">tyler@convoycapital.com</span>
+              </div>
+            </div>
+            <div className="border-t" />
+            <div className="bg-background p-2">
+              <p className="text-xs leading-relaxed text-muted-foreground">
+                Admin of Convoy Capital organization. Manages his own brokerage team while overseeing the entire organization of 8 separate teams.
+              </p>
+            </div>
+            <div className="border-t" />
+            <div className="flex items-center justify-between bg-muted/50 px-2 py-1.5">
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-normal text-muted-foreground">User Profile</span>
+                <span className="inline-flex h-5 items-center gap-1.5 rounded-full border px-2 text-xs font-medium">
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#3E9B70]" />
+                  Broker
+                </span>
+              </div>
+              <span className="text-xs text-muted-foreground">Convoy - Tyler's Team</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* The Use Case */}
+      <div>
+        <span className="mb-4 block font-mono text-xs font-semibold uppercase tracking-wider text-muted-foreground">The Use Case</span>
+        <div className="flex flex-col gap-3">
+          <h3 className="text-lg font-medium">Multi-team brokerage with separate accounts for data privacy</h3>
+          <div className="space-y-3 text-sm text-muted-foreground leading-relaxed">
+            <p>
+              Convoy Capital operates with 8 separate broker teams under one organization. Tyler Bradford is the admin who oversees all teams while also running his own brokerage operations.
+            </p>
+            <p>
+              Each team maintains separate data to protect their lender and sponsor contacts from each other. However, brokers can still collaborate when they co-broker deals together, with the ability to CC each other and add teammates to deal teams when needed.
+            </p>
+            <p>
+              <strong>How Profile Switcher works:</strong> Since Convoy is broker-only, Tyler is always in Broker Mode. There's no mode switcher in the footer because he only has one role. Tyler sees all broker features (Deals, Network, Market, Files, Create Deal) consistently.
+            </p>
+            <p>
+              <strong>Key simplification:</strong> For single-role organizations, Design Option 1 is effectively the same as a standard broker experience. No mode switching is needed, making it the simplest possible implementation.
+            </p>
+          </div>
+        </div>
+      </div>
+    </>
+  )
+}
+
+// Leverage Companies Design Option 1 - Profile Switcher
+function LeverageDesignOption1() {
+  return (
+    <>
+      {/* Header */}
+      <div className="flex items-start justify-between">
+        <div className="flex flex-col gap-2">
+          <span className="font-mono text-xs font-semibold uppercase tracking-wider text-muted-foreground">Organization</span>
+          <h1 className="text-2xl font-semibold">Leverage Companies / Brick City Capital</h1>
+          <p className="text-muted-foreground">
+            Design Option 1: Lender-Only (No Mode Switching Needed)
+          </p>
+        </div>
+        <div className="flex gap-2">
+          <span className="inline-flex h-6 items-center gap-1.5 rounded-full border px-3 text-xs font-medium">
+            <span className="h-1.5 w-1.5 rounded-full bg-[#3880E8]" />
+            Lender
+          </span>
+        </div>
+      </div>
+
+      {/* How It Works */}
+      <div className="rounded-lg border bg-muted/30 p-4">
+        <h3 className="mb-3 text-sm font-semibold">How It Works for Lender-Only</h3>
+        <div className="space-y-2 text-sm leading-relaxed">
+          <p>
+            JP and Ian only have access to <strong className="text-blue-600">Lender Mode</strong>. Since both entities are lender-only, there's no mode switcher—they're always in lender mode.
+          </p>
+          <p>
+            They see lender features (Network, Vaults) and work seamlessly across both Brick City Capital and Leverage Companies without needing to switch modes.
+          </p>
+          <p className="text-xs text-muted-foreground">
+            <strong>Note:</strong> This demonstrates how Design Option 1 works for lender-only organizations—straightforward and focused.
+          </p>
+        </div>
+      </div>
+
+      {/* Users */}
+      <div>
+        <span className="mb-4 block font-mono text-xs font-semibold uppercase tracking-wider text-muted-foreground">Users</span>
+        <div className="grid gap-3 md:grid-cols-2">
+          <div className="rounded-lg border bg-card">
+            <div className="flex items-center gap-3 p-2">
+              <div className="h-10 w-10 shrink-0 overflow-hidden rounded-full">
+                <Image src={avatar4} alt="JP Helan" width={40} height={40} className="h-full w-full object-cover" />
+              </div>
+              <div className="flex flex-1 flex-col gap-0.5">
+                <span className="text-sm font-semibold">JP Helan</span>
+                <span className="text-xs text-muted-foreground">jphelan@brkcty.com</span>
+              </div>
+            </div>
+            <div className="border-t" />
+            <div className="flex items-center justify-between bg-muted/50 px-2 py-1.5">
+              <span className="text-xs font-normal text-muted-foreground">Always in:</span>
+              <span className="inline-flex h-5 items-center gap-1.5 rounded-full border px-2 text-xs font-medium">
+                <span className="h-1.5 w-1.5 rounded-full bg-[#3880E8]" />
+                Lender Mode
+              </span>
+            </div>
+          </div>
+
+          <div className="rounded-lg border bg-card">
+            <div className="flex items-center gap-3 p-2">
+              <div className="h-10 w-10 shrink-0 overflow-hidden rounded-full">
+                <Image src={avatar5} alt="Ian Rodriguez" width={40} height={40} className="h-full w-full object-cover" />
+              </div>
+              <div className="flex flex-1 flex-col gap-0.5">
+                <span className="text-sm font-semibold">Ian Rodriguez</span>
+                <span className="text-xs text-muted-foreground">ian@leveragecompanies.com</span>
+              </div>
+            </div>
+            <div className="border-t" />
+            <div className="flex items-center justify-between bg-muted/50 px-2 py-1.5">
+              <span className="text-xs font-normal text-muted-foreground">Always in:</span>
+              <span className="inline-flex h-5 items-center gap-1.5 rounded-full border px-2 text-xs font-medium">
+                <span className="h-1.5 w-1.5 rounded-full bg-[#3880E8]" />
+                Lender Mode
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Why This Approach */}
+      <div>
+        <h2 className="mb-3 text-lg font-semibold">Why This Approach</h2>
+        <div className="space-y-3 text-sm leading-relaxed">
+          <p>
+            For lender-only organizations like Leverage Companies, Design Option 1 keeps things simple—one mode, one consistent experience across both legal entities.
+          </p>
+          <p>
+            The multi-entity structure (Brick City + Leverage Co) doesn't add complexity to the mode switching because both operate in the same lender mode.
+          </p>
+        </div>
+      </div>
+    </>
+  )
+}
+
+// ============================================================================
+// DESIGN OPTION 2: UNIFIED EXPERIENCE
+// ============================================================================
+
+// BWE Design Option 2 - Unified Experience
+function BWEDesignOption2() {
+  return (
+    <>
+      {/* Header */}
+      <div className="flex items-start justify-between">
+        <div className="flex flex-col gap-2">
+          <span className="font-mono text-xs font-semibold uppercase tracking-wider text-muted-foreground">Organization</span>
+          <h1 className="text-2xl font-semibold">BWE</h1>
+        </div>
+        <div className="flex gap-2">
+          <span className="inline-flex h-6 items-center gap-1.5 rounded-full border px-3 text-xs font-medium">
+            <span className="h-1.5 w-1.5 rounded-full bg-[#3E9B70]" />
+            Broker
+          </span>
+          <span className="inline-flex h-6 items-center gap-1.5 rounded-full border px-3 text-xs font-medium">
+            <span className="h-1.5 w-1.5 rounded-full bg-[#3880E8]" />
+            Lender
+          </span>
+        </div>
+      </div>
+
+      {/* Accounts */}
+      <div>
+        <span className="mb-4 block font-mono text-xs font-semibold uppercase tracking-wider text-muted-foreground">Accounts</span>
+        <div className="grid gap-3 md:grid-cols-2">
+          {/* BWE Brokerage Account */}
+          <div className="rounded-lg border bg-card">
+            <div className="flex items-center gap-3 p-2">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-muted">
+                <Briefcase className="h-4 w-4" />
+              </div>
+              <div className="flex flex-1 flex-col gap-0.5">
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-semibold">BWE Brokerage</span>
+                  <span className="inline-flex h-5 items-center gap-1.5 rounded-full border px-2 text-xs font-medium">
+                    <span className="h-1.5 w-1.5 rounded-full bg-[#3E9B70]" />
+                    Broker
+                  </span>
+                </div>
+                <span className="text-xs text-muted-foreground">
+                  Primary brokerage account for running outreach campaigns and managing placements to external lenders.
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* BWE Lending Account */}
+          <div className="rounded-lg border bg-card">
+            <div className="flex items-center gap-3 p-2">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-muted">
+                <Landmark className="h-4 w-4" />
+              </div>
+              <div className="flex flex-1 flex-col gap-0.5">
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-semibold">BWE Lending</span>
+                  <span className="inline-flex h-5 items-center gap-1.5 rounded-full border px-2 text-xs font-medium">
+                    <span className="h-1.5 w-1.5 rounded-full bg-[#3880E8]" />
+                    Lender
+                  </span>
+                </div>
+                <span className="text-xs text-muted-foreground">
+                  Receives inbound placements from other brokers when BWE provides direct financing for deals.
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Users */}
+      <div>
+        <span className="mb-4 block font-mono text-xs font-semibold uppercase tracking-wider text-muted-foreground">Users</span>
+        <div className="grid gap-3 md:grid-cols-2">
+          {/* Graham Gilreath */}
+          <div className="rounded-lg border bg-card">
+            <div className="flex items-center gap-3 p-2">
+              <div className="h-10 w-10 shrink-0 overflow-hidden rounded-full">
+                <Image src={avatar4} alt="Graham Gilreath" width={40} height={40} className="h-full w-full object-cover" />
+              </div>
+              <div className="flex flex-1 flex-col gap-0.5">
+                <span className="text-sm font-semibold">Graham Gilreath</span>
+                <span className="text-xs text-muted-foreground">graham.gilreath@bwe.com</span>
+              </div>
+            </div>
+            <div className="border-t" />
+            <div className="bg-background p-2">
+              <p className="text-xs leading-relaxed text-muted-foreground">
+                User across both accounts. Acts as broker on brokerage deals and as lender contact when BWE provides direct financing.
+              </p>
+            </div>
+            <div className="border-t" />
+            <div className="flex items-center justify-between bg-muted/50 px-2 py-1.5">
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-normal text-muted-foreground">User Profile</span>
+                <span className="inline-flex h-5 items-center gap-1.5 rounded-full border px-2 text-xs font-medium">
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#3E9B70]" />
                   Broker
                 </span>
               </div>
               <span className="text-xs text-muted-foreground">BWE Brokerage</span>
+            </div>
+            <div className="border-t" />
+            <div className="flex items-center justify-between bg-muted/50 px-2 py-1.5">
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-normal text-muted-foreground">User Profile</span>
+                <span className="inline-flex h-5 items-center gap-1.5 rounded-full border px-2 text-xs font-medium">
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#3880E8]" />
+                  Lender
+                </span>
+              </div>
+              <span className="text-xs text-muted-foreground">BWE Lending</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* The Use Case */}
+      <div>
+        <span className="mb-4 block font-mono text-xs font-semibold uppercase tracking-wider text-muted-foreground">The Use Case</span>
+        <div className="flex flex-col gap-3">
+          <h3 className="text-lg font-medium">Lender who also acts as broker - dual role evolution within one organization</h3>
+          <div className="space-y-3 text-sm text-muted-foreground leading-relaxed">
+            <p>
+              BWE is an Enterprise customer that operates as both a lender and a broker. Very often they have deals sent to them, the deal doesn't fit their bucket, and they then try to broker it out to other lenders. Graham Gilreath's email (graham.gilreath@bwe.com) was already in Lev as a lender contact when BWE began evaluating the platform for brokerage services.
+            </p>
+            <p>
+              To handle this, we create a 2nd account for BWE's Brokerage division, and Graham belongs to both accounts. This allows Graham to work on brokered deals—running outreach campaigns and managing placements to external lenders—while also receiving and evaluating inbound placements when other brokers send deals to BWE for direct financing.
+            </p>
+            <p>
+              <strong>Sidebar behavior:</strong> Graham sees all features from both accounts in one unified view. Role indicators (colored dots) appear next to each feature:
+            </p>
+            <ul className="list-disc list-inside space-y-1 text-sm">
+              <li><strong>Green dot (Broker only):</strong> Create Deal, Deals, Market, Files - only shows data from BWE Brokerage account</li>
+              <li><strong>Green + Blue dots (Both):</strong> Network, Vaults - aggregates data from both BWE Brokerage and BWE Lending accounts</li>
+            </ul>
+            <p>
+              <strong>Key benefit:</strong> Graham can see and access all features simultaneously without switching modes. When he clicks on Deals, it shows his broker deals. When he accesses Network or Vaults, it shows contacts and vaults from both accounts aggregated together.
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </>
+  )
+}
+
+// Convoy Design Option 2 - Unified Experience
+function ConvoyDesignOption2() {
+  return (
+    <>
+      {/* Header */}
+      <div className="flex items-start justify-between">
+        <div className="flex flex-col gap-2">
+          <span className="font-mono text-xs font-semibold uppercase tracking-wider text-muted-foreground">Organization</span>
+          <h1 className="text-2xl font-semibold">Convoy Capital</h1>
+          <p className="text-muted-foreground">
+            Multi-team brokerage with separate accounts for data privacy
+          </p>
+        </div>
+        <div className="flex gap-2">
+          <span className="inline-flex h-6 items-center gap-1.5 rounded-full border px-3 text-xs font-medium">
+            <span className="h-1.5 w-1.5 rounded-full bg-[#3E9B70]" />
+            Broker
+          </span>
+        </div>
+      </div>
+
+      {/* Account */}
+      <div>
+        <span className="mb-4 block font-mono text-xs font-semibold uppercase tracking-wider text-muted-foreground">Account</span>
+        <div className="grid gap-3 md:grid-cols-2">
+          <div className="rounded-lg border bg-card">
+            <div className="flex items-center gap-3 p-2">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-muted">
+                <Briefcase className="h-4 w-4" />
+              </div>
+              <div className="flex flex-1 flex-col gap-0.5">
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-semibold">Convoy Capital - Tyler's Team</span>
+                  <span className="inline-flex h-5 items-center gap-1.5 rounded-full border px-2 text-xs font-medium">
+                    <span className="h-1.5 w-1.5 rounded-full bg-[#3E9B70]" />
+                    Broker
+                  </span>
+                </div>
+                <span className="text-xs text-muted-foreground">
+                  One of 8 separate broker teams. Data is isolated but teams can collaborate on co-brokered deals.
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* User */}
+      <div>
+        <span className="mb-4 block font-mono text-xs font-semibold uppercase tracking-wider text-muted-foreground">User</span>
+        <div className="grid gap-3 md:grid-cols-2">
+          <div className="rounded-lg border bg-card">
+            <div className="flex items-center gap-3 p-2">
+              <div className="h-10 w-10 shrink-0 overflow-hidden rounded-full">
+                <Image src={avatar2} alt="Tyler Bradford" width={40} height={40} className="h-full w-full object-cover" />
+              </div>
+              <div className="flex flex-1 flex-col gap-0.5">
+                <span className="text-sm font-semibold">Tyler Bradford</span>
+                <span className="text-xs text-muted-foreground">tyler@convoycapital.com</span>
+              </div>
+            </div>
+            <div className="border-t" />
+            <div className="bg-background p-2">
+              <p className="text-xs leading-relaxed text-muted-foreground">
+                Admin of Convoy Capital organization. Manages his own brokerage team while overseeing the entire organization of 8 separate teams.
+              </p>
+            </div>
+            <div className="border-t" />
+            <div className="flex items-center justify-between bg-muted/50 px-2 py-1.5">
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-normal text-muted-foreground">User Profile</span>
+                <span className="inline-flex h-5 items-center gap-1.5 rounded-full border px-2 text-xs font-medium">
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#3E9B70]" />
+                  Broker
+                </span>
+              </div>
+              <span className="text-xs text-muted-foreground">Convoy - Tyler's Team</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* The Use Case */}
+      <div>
+        <span className="mb-4 block font-mono text-xs font-semibold uppercase tracking-wider text-muted-foreground">The Use Case</span>
+        <div className="flex flex-col gap-3">
+          <h3 className="text-lg font-medium">Multi-team brokerage with separate accounts for data privacy</h3>
+          <div className="space-y-3 text-sm text-muted-foreground leading-relaxed">
+            <p>
+              Convoy Capital operates with 8 separate broker teams under one organization. Tyler Bradford is the admin who oversees all teams while also running his own brokerage operations.
+            </p>
+            <p>
+              Each team maintains separate data to protect their lender and sponsor contacts from each other. However, brokers can still collaborate when they co-broker deals together, with the ability to CC each other and add teammates to deal teams when needed.
+            </p>
+            <p>
+              Tyler's User Profile links him to the Convoy broker account (his specific team). This structure allows for both data isolation and selective collaboration—teams work independently but can coordinate on specific deals when beneficial.
+            </p>
+            <p>
+              <strong>How Unified Experience works:</strong> Since Tyler only has one role (Broker), he sees all broker features in a unified view. No role indicators needed because there's only one account type. This is simpler than BWE's dual-role scenario.
+            </p>
+            <p>
+              <strong>Key benefit:</strong> The platform supports organizational hierarchy where one person can be an admin with org-level visibility while also being a member of a specific team for their day-to-day brokerage work.
+            </p>
+          </div>
+        </div>
+      </div>
+    </>
+  )
+}
+
+// Leverage Companies Design Option 2 - Unified Experience
+function LeverageDesignOption2() {
+  return (
+    <>
+      {/* Header */}
+      <div className="flex items-start justify-between">
+        <div className="flex flex-col gap-2">
+          <span className="font-mono text-xs font-semibold uppercase tracking-wider text-muted-foreground">Organization</span>
+          <h1 className="text-2xl font-semibold">Leverage Companies / Brick City Capital</h1>
+          <p className="text-muted-foreground">
+            Two legal entities, same team - residential DSCR lenders
+          </p>
+        </div>
+        <div className="flex gap-2">
+          <span className="inline-flex h-6 items-center gap-1.5 rounded-full border px-3 text-xs font-medium">
+            <span className="h-1.5 w-1.5 rounded-full bg-[#3880E8]" />
+            Lender
+          </span>
+        </div>
+      </div>
+
+      {/* Accounts */}
+      <div>
+        <span className="mb-4 block font-mono text-xs font-semibold uppercase tracking-wider text-muted-foreground">Accounts</span>
+        <div className="grid gap-3 md:grid-cols-2">
+          <div className="rounded-lg border bg-card">
+            <div className="flex items-center gap-3 p-2">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-muted">
+                <Landmark className="h-4 w-4" />
+              </div>
+              <div className="flex flex-1 flex-col gap-0.5">
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-semibold">Brick City Capital</span>
+                  <span className="inline-flex h-5 items-center gap-1.5 rounded-full border px-2 text-xs font-medium">
+                    <span className="h-1.5 w-1.5 rounded-full bg-[#3880E8]" />
+                    Lender
+                  </span>
+                </div>
+                <span className="text-xs text-muted-foreground">
+                  Residential DSCR lending under Brick City brand.
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div className="rounded-lg border bg-card">
+            <div className="flex items-center gap-3 p-2">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-muted">
+                <Landmark className="h-4 w-4" />
+              </div>
+              <div className="flex flex-1 flex-col gap-0.5">
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-semibold">Leverage Companies</span>
+                  <span className="inline-flex h-5 items-center gap-1.5 rounded-full border px-2 text-xs font-medium">
+                    <span className="h-1.5 w-1.5 rounded-full bg-[#3880E8]" />
+                    Lender
+                  </span>
+                </div>
+                <span className="text-xs text-muted-foreground">
+                  Residential DSCR lending under Leverage Companies brand.
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Users */}
+      <div>
+        <span className="mb-4 block font-mono text-xs font-semibold uppercase tracking-wider text-muted-foreground">Users</span>
+        <div className="grid gap-3 md:grid-cols-2">
+          <div className="rounded-lg border bg-card">
+            <div className="flex items-center gap-3 p-2">
+              <div className="h-10 w-10 shrink-0 overflow-hidden rounded-full">
+                <Image src={avatar4} alt="JP Helan" width={40} height={40} className="h-full w-full object-cover" />
+              </div>
+              <div className="flex flex-1 flex-col gap-0.5">
+                <span className="text-sm font-semibold">JP Helan</span>
+                <span className="text-xs text-muted-foreground">jphelan@brkcty.com</span>
+              </div>
+            </div>
+            <div className="border-t" />
+            <div className="bg-background p-2">
+              <p className="text-xs leading-relaxed text-muted-foreground">
+                Lender specializing in residential DSCR loans. Works across both entities as part of the shared team.
+              </p>
+            </div>
+            <div className="border-t" />
+            <div className="flex items-center justify-between bg-muted/50 px-2 py-1.5">
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-normal text-muted-foreground">User Profile</span>
+                <span className="inline-flex h-5 items-center gap-1.5 rounded-full border px-2 text-xs font-medium">
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#3880E8]" />
+                  Lender
+                </span>
+              </div>
+              <span className="text-xs text-muted-foreground">Brick City Capital</span>
+            </div>
+          </div>
+
+          <div className="rounded-lg border bg-card">
+            <div className="flex items-center gap-3 p-2">
+              <div className="h-10 w-10 shrink-0 overflow-hidden rounded-full">
+                <Image src={avatar5} alt="Ian Rodriguez" width={40} height={40} className="h-full w-full object-cover" />
+              </div>
+              <div className="flex flex-1 flex-col gap-0.5">
+                <span className="text-sm font-semibold">Ian Rodriguez</span>
+                <span className="text-xs text-muted-foreground">ian@leveragecompanies.com</span>
+              </div>
+            </div>
+            <div className="border-t" />
+            <div className="bg-background p-2">
+              <p className="text-xs leading-relaxed text-muted-foreground">
+                Lender specializing in residential DSCR loans. Works across both entities as part of the shared team.
+              </p>
+            </div>
+            <div className="border-t" />
+            <div className="flex items-center justify-between bg-muted/50 px-2 py-1.5">
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-normal text-muted-foreground">User Profile</span>
+                <span className="inline-flex h-5 items-center gap-1.5 rounded-full border px-2 text-xs font-medium">
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#3880E8]" />
+                  Lender
+                </span>
+              </div>
+              <span className="text-xs text-muted-foreground">Leverage Companies</span>
             </div>
           </div>
         </div>
@@ -677,13 +1320,13 @@ function BWEUseCase() {
         <h2 className="mb-3 text-lg font-semibold">The Workflow</h2>
         <div className="space-y-3 text-sm leading-relaxed">
           <p>
-            Graham Gilreath's email (graham.gilreath@bwe.com) was already in Lev's system as a lender contact when BWE began evaluating the platform for brokerage services. This created an immediate technical challenge during account setup: how do you add broker capabilities to an existing lender contact without forcing a duplicate account or requiring a different email address?
+            Leverage Companies owns Brick City Capital. While technically two separate legal entities, they operate as a single unified team specializing in residential DSCR loans.
           </p>
           <p>
-            BWE operates as both a lender and a broker. Like many lenders, when they receive deals that don't fit their lending criteria, they broker those deals out to other lenders rather than turning away business entirely. This is a common pattern in the industry—the same company and same employees need to operate in both capacities.
+            JP and Ian work seamlessly across both organizations, evaluating loan requests, underwriting deals, and managing a shared pipeline. The choice of which brand to use depends on the specific deal or client relationship, not on separate operational workflows.
           </p>
           <p>
-            Graham needs access to both lender features (receiving and evaluating placements sent to BWE) and broker features (creating deals, running outreach campaigns, managing placements for deals BWE is brokering). The platform attempted to create a new account for Graham as a broker but encountered a conflict because his email already existed. The fundamental issue: one person, one email, one company, but an evolving role that requires access to different feature sets.
+            Both companies share the same team page on their websites, reflecting their unified operations despite being distinct legal entities.
           </p>
         </div>
       </div>
@@ -693,14 +1336,419 @@ function BWEUseCase() {
         <h2 className="mb-3 text-lg font-semibold">Why This Matters</h2>
         <div className="space-y-3 text-sm leading-relaxed">
           <p>
-            This represents perhaps the most common real-world scenario: users whose roles expand or shift over time. The system was designed with the assumption that roles are static and predetermined, but in practice, lenders frequently become brokers, brokers take on sponsor roles, and business models evolve.
+            This shows a multi-entity/DBA structure where separate legal companies share the same team and operations. It's different from Convoy (separate teams) and BWE (dual roles).
           </p>
           <p>
-            The February 17th discussion highlighted this exact pattern: "Very often we have lenders that have deals sent to them, the deal doesn't fit their bucket, and they then try to broker it out to other lenders." The proposed architectural solution is to decouple roles from user profiles entirely—one email address creates one account, and that account can have multiple roles enabled dynamically. Features are shown or hidden based on active roles, not by forcing users to maintain separate profiles or switch between artificial organizational boundaries.
+            The platform must accommodate users who work across multiple corporate entities under common ownership without forcing completely separate account management or constant context switching.
+          </p>
+        </div>
+      </div>
+    </>
+  )
+}
+
+// ============================================================================
+// DESIGN OPTION 3: PERSON-CENTRIC ARCHITECTURE
+// ============================================================================
+
+// BWE Design Option 3 - Person-Centric
+function BWEDesignOption3() {
+  return (
+    <>
+      {/* Header */}
+      <div className="flex items-start justify-between">
+        <div className="flex flex-col gap-2">
+          <span className="font-mono text-xs font-semibold uppercase tracking-wider text-muted-foreground">Organization</span>
+          <h1 className="text-2xl font-semibold">BWE</h1>
+        </div>
+        <div className="flex gap-2">
+          <span className="inline-flex h-6 items-center gap-1.5 rounded-full border px-3 text-xs font-medium">
+            <span className="h-1.5 w-1.5 rounded-full bg-[#3E9B70]" />
+            Broker
+          </span>
+          <span className="inline-flex h-6 items-center gap-1.5 rounded-full border px-3 text-xs font-medium">
+            <span className="h-1.5 w-1.5 rounded-full bg-[#3880E8]" />
+            Lender
+          </span>
+        </div>
+      </div>
+
+      {/* Accounts */}
+      <div>
+        <span className="mb-4 block font-mono text-xs font-semibold uppercase tracking-wider text-muted-foreground">Accounts</span>
+        <div className="grid gap-3 md:grid-cols-2">
+          <div className="rounded-lg border bg-card">
+            <div className="flex items-center gap-3 p-2">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-muted">
+                <Briefcase className="h-4 w-4" />
+              </div>
+              <div className="flex flex-1 flex-col gap-0.5">
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-semibold">BWE Brokerage</span>
+                  <span className="inline-flex h-5 items-center gap-1.5 rounded-full border px-2 text-xs font-medium">
+                    <span className="h-1.5 w-1.5 rounded-full bg-[#3E9B70]" />
+                    Broker
+                  </span>
+                </div>
+                <span className="text-xs text-muted-foreground">
+                  Primary brokerage account for running outreach campaigns and managing placements to external lenders.
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div className="rounded-lg border bg-card">
+            <div className="flex items-center gap-3 p-2">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-muted">
+                <Landmark className="h-4 w-4" />
+              </div>
+              <div className="flex flex-1 flex-col gap-0.5">
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-semibold">BWE Lending</span>
+                  <span className="inline-flex h-5 items-center gap-1.5 rounded-full border px-2 text-xs font-medium">
+                    <span className="h-1.5 w-1.5 rounded-full bg-[#3880E8]" />
+                    Lender
+                  </span>
+                </div>
+                <span className="text-xs text-muted-foreground">
+                  Receives inbound placements from other brokers when BWE provides direct financing for deals.
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Person */}
+      <div>
+        <span className="mb-4 block font-mono text-xs font-semibold uppercase tracking-wider text-muted-foreground">Person</span>
+        <div className="grid gap-3 md:grid-cols-2">
+          <div className="rounded-lg border bg-card">
+            <div className="flex items-center gap-3 p-2">
+              <div className="h-10 w-10 shrink-0 overflow-hidden rounded-full">
+                <Image src={avatar4} alt="Graham Gilreath" width={40} height={40} className="h-full w-full object-cover" />
+              </div>
+              <div className="flex flex-1 flex-col gap-0.5">
+                <span className="text-sm font-semibold">Graham Gilreath</span>
+                <span className="text-xs text-muted-foreground">graham.gilreath@bwe.com</span>
+              </div>
+            </div>
+            <div className="border-t" />
+            <div className="bg-background p-2">
+              <p className="text-xs leading-relaxed text-muted-foreground">
+                User across both accounts. Global Person identity exists independently of accounts, with 2 Memberships linking to BWE Brokerage and BWE Lending.
+              </p>
+            </div>
+            <div className="border-t" />
+            <div className="bg-muted/50 px-2 py-1.5">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-normal text-muted-foreground">Person ID</span>
+                <span className="font-mono text-xs">person_gg_001</span>
+              </div>
+            </div>
+            <div className="border-t" />
+            <div className="flex items-center justify-between bg-muted/50 px-2 py-1.5">
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-normal text-muted-foreground">Membership</span>
+                <span className="inline-flex h-5 items-center gap-1.5 rounded-full border px-2 text-xs font-medium">
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#3E9B70]" />
+                  Broker
+                </span>
+              </div>
+              <span className="text-xs text-muted-foreground">BWE Brokerage</span>
+            </div>
+            <div className="border-t" />
+            <div className="flex items-center justify-between bg-muted/50 px-2 py-1.5">
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-normal text-muted-foreground">Membership</span>
+                <span className="inline-flex h-5 items-center gap-1.5 rounded-full border px-2 text-xs font-medium">
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#3880E8]" />
+                  Lender
+                </span>
+              </div>
+              <span className="text-xs text-muted-foreground">BWE Lending</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* The Use Case */}
+      <div>
+        <span className="mb-4 block font-mono text-xs font-semibold uppercase tracking-wider text-muted-foreground">The Use Case</span>
+        <div className="flex flex-col gap-3">
+          <h3 className="text-lg font-medium">Lender who also acts as broker - dual role evolution within one organization</h3>
+          <div className="space-y-3 text-sm text-muted-foreground leading-relaxed">
+            <p>
+              BWE is an Enterprise customer that operates as both a lender and a broker. Very often they have deals sent to them, the deal doesn't fit their bucket, and they then try to broker it out to other lenders. Graham Gilreath's email (graham.gilreath@bwe.com) was already in Lev as a lender contact when BWE began evaluating the platform for brokerage services.
+            </p>
+            <p>
+              To handle this, we create a 2nd account for BWE's Brokerage division, and Graham's Person has Memberships to both accounts. This allows Graham to work on brokered deals—running outreach campaigns and managing placements to external lenders—while also receiving and evaluating inbound placements when other brokers send deals to BWE for direct financing.
+            </p>
+            <p>
+              <strong>Person-Centric Architecture:</strong> Graham's global Person identity (person_gg_001) exists independently. Two Memberships link this Person to BWE Brokerage and BWE Lending accounts. Account_user is only used for authentication. This architecture unifies the login story: Person + accounts_users = can log in.
+            </p>
+            <p>
+              <strong>Key benefit:</strong> The Person already exists from CRM, so letting a CRM contact log in is just creating an accounts_users record. Adding a CRM contact as a deal team member becomes simple—their Person already exists, deal_users.person_id links them directly. No need to create accounts or "memberships" for someone to participate in a deal.
+            </p>
+            <p>
+              <strong>Sidebar behavior:</strong> Identical to Design Option 2. Graham sees all features from both accounts with role indicators:
+            </p>
+            <ul className="list-disc list-inside space-y-1 text-sm">
+              <li><strong>Green dot (Broker only):</strong> Create Deal, Deals, Market, Files - only shows data from BWE Brokerage account</li>
+              <li><strong>Green + Blue dots (Both):</strong> Network, Vaults - aggregates data from both BWE Brokerage and BWE Lending accounts</li>
+            </ul>
+            <p>
+              <strong>UX:</strong> From Graham's perspective, this works identically to Design Option 2. The difference is purely in the underlying data model (Person + Membership vs User Profile).
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </>
+  )
+}
+
+// Convoy Design Option 3 - Person-Centric
+function ConvoyDesignOption3() {
+  return (
+    <>
+      {/* Header */}
+      <div className="flex items-start justify-between">
+        <div className="flex flex-col gap-2">
+          <span className="font-mono text-xs font-semibold uppercase tracking-wider text-muted-foreground">Organization</span>
+          <h1 className="text-2xl font-semibold">Convoy Capital</h1>
+        </div>
+        <div className="flex gap-2">
+          <span className="inline-flex h-6 items-center gap-1.5 rounded-full border px-3 text-xs font-medium">
+            <span className="h-1.5 w-1.5 rounded-full bg-[#3E9B70]" />
+            Broker
+          </span>
+        </div>
+      </div>
+
+      {/* Account */}
+      <div>
+        <span className="mb-4 block font-mono text-xs font-semibold uppercase tracking-wider text-muted-foreground">Account</span>
+        <div className="grid gap-3 md:grid-cols-2">
+          <div className="rounded-lg border bg-card">
+            <div className="flex items-center gap-3 p-2">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-muted">
+                <Briefcase className="h-4 w-4" />
+              </div>
+              <div className="flex flex-1 flex-col gap-0.5">
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-semibold">Convoy Capital - Tyler's Team</span>
+                  <span className="inline-flex h-5 items-center gap-1.5 rounded-full border px-2 text-xs font-medium">
+                    <span className="h-1.5 w-1.5 rounded-full bg-[#3E9B70]" />
+                    Broker
+                  </span>
+                </div>
+                <span className="text-xs text-muted-foreground">
+                  One of 8 separate broker teams. Data is isolated but teams can collaborate on co-brokered deals.
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Person */}
+      <div>
+        <span className="mb-4 block font-mono text-xs font-semibold uppercase tracking-wider text-muted-foreground">Person</span>
+        <div className="grid gap-3 md:grid-cols-2">
+          <div className="rounded-lg border bg-card">
+            <div className="flex items-center gap-3 p-2">
+              <div className="h-10 w-10 shrink-0 overflow-hidden rounded-full">
+                <Image src={avatar2} alt="Tyler Bradford" width={40} height={40} className="h-full w-full object-cover" />
+              </div>
+              <div className="flex flex-1 flex-col gap-0.5">
+                <span className="text-sm font-semibold">Tyler Bradford</span>
+                <span className="text-xs text-muted-foreground">tyler@convoycapital.com</span>
+              </div>
+            </div>
+            <div className="border-t" />
+            <div className="bg-background p-2">
+              <p className="text-xs leading-relaxed text-muted-foreground">
+                Admin of Convoy organization. Global Person identity exists independently, with a single Membership linking to Convoy broker account. Admin privileges are tied to the Person entity.
+              </p>
+            </div>
+            <div className="border-t" />
+            <div className="bg-muted/50 px-2 py-1.5">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-normal text-muted-foreground">Person ID</span>
+                <span className="font-mono text-xs">person_tb_001</span>
+              </div>
+            </div>
+            <div className="border-t" />
+            <div className="flex items-center justify-between bg-muted/50 px-2 py-1.5">
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-normal text-muted-foreground">Membership</span>
+                <span className="inline-flex h-5 items-center gap-1.5 rounded-full border px-2 text-xs font-medium">
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#3E9B70]" />
+                  Broker
+                </span>
+              </div>
+              <span className="text-xs text-muted-foreground">Convoy - Tyler's Team</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* The Use Case */}
+      <div>
+        <span className="mb-4 block font-mono text-xs font-semibold uppercase tracking-wider text-muted-foreground">The Use Case</span>
+        <div className="flex flex-col gap-3">
+          <h3 className="text-lg font-medium">Multi-team brokerage with separate accounts for data privacy</h3>
+          <div className="space-y-3 text-sm text-muted-foreground leading-relaxed">
+            <p>
+              Convoy Capital operates with 8 separate broker teams under one organization. Tyler Bradford is the admin who oversees all teams while also running his own brokerage operations.
+            </p>
+            <p>
+              Each team maintains separate data to protect their lender and sponsor contacts from each other. However, brokers can still collaborate when they co-broker deals together, with the ability to CC each other and add teammates to deal teams when needed.
+            </p>
+            <p>
+              <strong>Person-Centric Architecture:</strong> Tyler's global Person identity (person_tb_001) exists independently. A single Membership links this Person to the Convoy broker account. Account_user is only for authentication. Admin privileges are tied to the Person entity, not to profiles.
+            </p>
+            <p>
+              <strong>Key benefit:</strong> For broker-only scenarios, the Person-centric model simplifies identity management. Everything flows from the Person entity—permissions, admin status, and account access all centralized in one place.
+            </p>
+            <p>
+              <strong>UX:</strong> From Tyler's perspective, this works identically to Design Option 2 (unified experience). The difference is purely in the underlying data model.
+            </p>
+          </div>
+        </div>
+      </div>
+    </>
+  )
+}
+
+// Leverage Companies Design Option 3 - Person-Centric
+function LeverageDesignOption3() {
+  return (
+    <>
+      {/* Header */}
+      <div className="flex items-start justify-between">
+        <div className="flex flex-col gap-2">
+          <span className="font-mono text-xs font-semibold uppercase tracking-wider text-muted-foreground">Organization</span>
+          <h1 className="text-2xl font-semibold">Leverage Companies / Brick City Capital</h1>
+          <p className="text-muted-foreground">
+            Design Option 3: Person-Centric Multi-Entity
+          </p>
+        </div>
+        <div className="flex gap-2">
+          <span className="inline-flex h-6 items-center gap-1.5 rounded-full border px-3 text-xs font-medium">
+            <span className="h-1.5 w-1.5 rounded-full bg-[#3880E8]" />
+            Lender
+          </span>
+        </div>
+      </div>
+
+      {/* Architecture Explanation */}
+      <div className="rounded-lg border bg-muted/30 p-4">
+        <h3 className="mb-3 text-sm font-semibold">Person-Centric Multi-Entity Structure</h3>
+        <div className="space-y-2 text-sm leading-relaxed">
+          <p>
+            Each person (JP and Ian) has their own <strong>Person</strong> entity with a single <strong>Membership</strong> to their respective account, but both work under the same organizational umbrella.
+          </p>
+          <p className="font-mono text-xs">
+            Organization → Account (Brick City / Leverage Co) → Person (person_id) → Account_User
+          </p>
+          <p className="text-xs text-muted-foreground">
+            <strong>Multi-entity simplicity:</strong> Each legal entity has its own account, each person has one membership, but they all collaborate seamlessly.
           </p>
         </div>
       </div>
 
+      {/* Persons */}
+      <div>
+        <span className="mb-4 block font-mono text-xs font-semibold uppercase tracking-wider text-muted-foreground">Persons</span>
+        <div className="grid gap-3 md:grid-cols-2">
+          <div className="rounded-lg border bg-card">
+            <div className="flex items-center gap-3 p-2">
+              <div className="h-10 w-10 shrink-0 overflow-hidden rounded-full">
+                <Image src={avatar4} alt="JP Helan" width={40} height={40} className="h-full w-full object-cover" />
+              </div>
+              <div className="flex flex-1 flex-col gap-0.5">
+                <span className="text-sm font-semibold">JP Helan</span>
+                <span className="text-xs text-muted-foreground">jphelan@brkcty.com</span>
+              </div>
+            </div>
+            <div className="border-t" />
+            <div className="bg-background p-2">
+              <p className="text-xs leading-relaxed text-muted-foreground">
+                Central identity with membership to Brick City Capital account.
+              </p>
+            </div>
+            <div className="border-t" />
+            <div className="bg-muted/50 px-2 py-1.5">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-normal text-muted-foreground">Person ID</span>
+                <span className="font-mono text-xs">person_jp_001</span>
+              </div>
+            </div>
+            <div className="border-t" />
+            <div className="flex items-center justify-between bg-muted/50 px-2 py-1.5">
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-normal text-muted-foreground">Membership</span>
+                <span className="inline-flex h-5 items-center gap-1.5 rounded-full border px-2 text-xs font-medium">
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#3880E8]" />
+                  Lender
+                </span>
+              </div>
+              <span className="text-xs text-muted-foreground">Brick City Capital</span>
+            </div>
+          </div>
+
+          <div className="rounded-lg border bg-card">
+            <div className="flex items-center gap-3 p-2">
+              <div className="h-10 w-10 shrink-0 overflow-hidden rounded-full">
+                <Image src={avatar5} alt="Ian Rodriguez" width={40} height={40} className="h-full w-full object-cover" />
+              </div>
+              <div className="flex flex-1 flex-col gap-0.5">
+                <span className="text-sm font-semibold">Ian Rodriguez</span>
+                <span className="text-xs text-muted-foreground">ian@leveragecompanies.com</span>
+              </div>
+            </div>
+            <div className="border-t" />
+            <div className="bg-background p-2">
+              <p className="text-xs leading-relaxed text-muted-foreground">
+                Central identity with membership to Leverage Companies account.
+              </p>
+            </div>
+            <div className="border-t" />
+            <div className="bg-muted/50 px-2 py-1.5">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-normal text-muted-foreground">Person ID</span>
+                <span className="font-mono text-xs">person_ir_001</span>
+              </div>
+            </div>
+            <div className="border-t" />
+            <div className="flex items-center justify-between bg-muted/50 px-2 py-1.5">
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-normal text-muted-foreground">Membership</span>
+                <span className="inline-flex h-5 items-center gap-1.5 rounded-full border px-2 text-xs font-medium">
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#3880E8]" />
+                  Lender
+                </span>
+              </div>
+              <span className="text-xs text-muted-foreground">Leverage Companies</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Why This Architecture */}
+      <div>
+        <h2 className="mb-3 text-lg font-semibold">Why This Architecture</h2>
+        <div className="space-y-3 text-sm leading-relaxed">
+          <p>
+            The Person-centric model handles multi-entity structures elegantly. Each person has their own Person entity and a single membership to their specific account, but both can collaborate across organizational boundaries because their identities are centralized.
+          </p>
+          <p>
+            This makes it simple to share deals, contacts, and data across Brick City Capital and Leverage Companies without complex account linking or profile management.
+          </p>
+        </div>
+      </div>
     </>
   )
 }
