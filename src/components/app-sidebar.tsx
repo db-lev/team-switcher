@@ -12,7 +12,6 @@ import {
 import { NavMain } from "@/components/blocks/nav/nav-main"
 import { NavUser } from "@/components/blocks/nav/nav-user"
 import { TeamSwitcher, type Team } from "@/components/team-switcher"
-import { ModeSwitcher } from "@/components/mode-switcher"
 import { useTeam } from "@/contexts/team-context"
 import { useActiveUser } from "@/contexts/active-user-context"
 import { useMode, type UserMode } from "@/contexts/mode-context"
@@ -436,10 +435,16 @@ const demoTeamUsers: Record<string, DemoUser[]> = {
 
 export { teams, demoTeamUsers }
 
+const modeConfig: Record<UserMode, { label: string }> = {
+  broker: { label: "Broker" },
+  lender: { label: "Lender" },
+  borrower: { label: "Borrower" },
+}
+
 export function AppSidebar() {
   const { activeTeam, setActiveTeam } = useTeam()
   const { activeUserId } = useActiveUser()
-  const { mode } = useMode()
+  const { mode, setMode } = useMode()
   
   // Get the selected demo user based on activeUserId
   const allUsers = activeTeam ? demoTeamUsers[activeTeam.name] || [] : []
@@ -450,12 +455,12 @@ export function AppSidebar() {
     ? { 
         name: selectedDemoUser.name, 
         email: selectedDemoUser.email,
-        avatar: "",
+        avatar: selectedDemoUser.avatar,
         teamIcon: activeTeam?.logo || GalleryVerticalEnd
       }
     : (activeTeam ? (teamUsers[activeTeam.name as keyof typeof teamUsers] || teamUsers["BWE - Design Option 1"]) : teamUsers["BWE - Design Option 1"])
 
-  const designOption = activeTeam?.designOption || 2
+  const designOption = activeTeam?.designOption || 1
   const useCase = activeTeam?.useCase || 'BWE'
 
   // Get navigation items based on design option and use case
@@ -559,16 +564,16 @@ export function AppSidebar() {
         <NavMain items={shared} label="Shared with Me" linkComponent={Link} />
       </SidebarContent>
       <SidebarFooter>
-        {designOption === 1 ? (
-          <ModeSwitcher 
-            availableModes={getAvailableModes()} 
-            userName={currentUser.name}
-            userEmail={currentUser.email}
-            userAvatar={selectedDemoUser?.avatar}
-          />
-        ) : (
-          <NavUser user={currentUser} onSignOut={() => console.log("Sign out")} />
-        )}
+        <NavUser 
+          user={currentUser}
+          subhead={designOption === 1 ? modeConfig[mode].label : undefined}
+          profileSwitcher={designOption === 1 ? {
+            availableProfiles: getAvailableModes(),
+            activeProfile: mode,
+            onProfileChange: setMode,
+          } : undefined}
+          onSignOut={() => console.log("Sign out")}
+        />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

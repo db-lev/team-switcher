@@ -2,7 +2,6 @@
 
 import * as React from "react"
 import { useHeader } from "@/contexts/header-context"
-import { NavActions } from "@/components/nav-actions"
 import {
   Breadcrumb,
   BreadcrumbItem,

@@ -13,7 +13,7 @@ export default function DashboardPage() {
   const { activeTeam } = useTeam()
 
   const useCase = activeTeam?.useCase || 'BWE'
-  const designOption = activeTeam?.designOption || 2
+  const designOption = activeTeam?.designOption || 1
 
   // Map use case + design option to component
   const getUseCaseComponent = () => {
@@ -729,6 +729,9 @@ function ConvoyDesignOption1() {
         <div className="flex flex-col gap-2">
           <span className="font-mono text-xs font-semibold uppercase tracking-wider text-muted-foreground">Organization</span>
           <h1 className="text-2xl font-semibold">Convoy Capital</h1>
+          <p className="text-muted-foreground">
+            Multi-team brokerage with separate accounts for data privacy
+          </p>
         </div>
         <div className="flex gap-2">
           <span className="inline-flex h-6 items-center gap-1.5 rounded-full border px-3 text-xs font-medium">
@@ -738,9 +741,9 @@ function ConvoyDesignOption1() {
         </div>
       </div>
 
-      {/* Account */}
+      {/* Accounts */}
       <div>
-        <span className="mb-4 block font-mono text-xs font-semibold uppercase tracking-wider text-muted-foreground">Account</span>
+        <span className="mb-4 block font-mono text-xs font-semibold uppercase tracking-wider text-muted-foreground">Accounts</span>
         <div className="grid gap-3 md:grid-cols-2">
           <div className="rounded-lg border bg-card">
             <div className="flex items-center gap-3 p-2">
@@ -749,14 +752,34 @@ function ConvoyDesignOption1() {
               </div>
               <div className="flex flex-1 flex-col gap-0.5">
                 <div className="flex items-center gap-2">
-                  <span className="text-sm font-semibold">Convoy Capital - Tyler's Team</span>
+                  <span className="text-sm font-semibold">Convoy Austin</span>
                   <span className="inline-flex h-5 items-center gap-1.5 rounded-full border px-2 text-xs font-medium">
                     <span className="h-1.5 w-1.5 rounded-full bg-[#3E9B70]" />
                     Broker
                   </span>
                 </div>
                 <span className="text-xs text-muted-foreground">
-                  One of 8 separate broker teams. Data is isolated but teams can collaborate on co-brokered deals.
+                  Tyler's brokerage team. One of 8 separate teams under Convoy Capital.
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div className="rounded-lg border bg-card opacity-50">
+            <div className="flex items-center gap-3 p-2">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-muted">
+                <Briefcase className="h-4 w-4" />
+              </div>
+              <div className="flex flex-1 flex-col gap-0.5">
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-semibold">Convoy Dallas</span>
+                  <span className="inline-flex h-5 items-center gap-1.5 rounded-full border px-2 text-xs font-medium">
+                    <span className="h-1.5 w-1.5 rounded-full bg-[#3E9B70]" />
+                    Broker
+                  </span>
+                </div>
+                <span className="text-xs text-muted-foreground">
+                  Another team under Convoy. Tyler doesn't belong to this account.
                 </span>
               </div>
             </div>
@@ -781,7 +804,7 @@ function ConvoyDesignOption1() {
             <div className="border-t" />
             <div className="bg-background p-2">
               <p className="text-xs leading-relaxed text-muted-foreground">
-                Admin of Convoy Capital organization. Manages his own brokerage team while overseeing the entire organization of 8 separate teams.
+                Admin of Convoy Capital organization. Belongs to Convoy Austin team account for his personal brokerage work. Has org-level visibility across all 8 teams.
               </p>
             </div>
             <div className="border-t" />
@@ -793,7 +816,7 @@ function ConvoyDesignOption1() {
                   Broker
                 </span>
               </div>
-              <span className="text-xs text-muted-foreground">Convoy - Tyler's Team</span>
+              <span className="text-xs text-muted-foreground">Convoy Austin</span>
             </div>
           </div>
         </div>
@@ -806,16 +829,23 @@ function ConvoyDesignOption1() {
           <h3 className="text-lg font-medium">Multi-team brokerage with separate accounts for data privacy</h3>
           <div className="space-y-3 text-sm text-muted-foreground leading-relaxed">
             <p>
-              Convoy Capital operates with 8 separate broker teams under one organization. Tyler Bradford is the admin who oversees all teams while also running his own brokerage operations.
+              Convoy Capital operates with 8 separate broker teams under one organization. Each team wants their lender and sponsor contacts protected from the other teams. However, brokers can still collaborate when they co-broker deals together—they can CC each other and add teammates to deal teams when needed.
             </p>
             <p>
-              Each team maintains separate data to protect their lender and sponsor contacts from each other. However, brokers can still collaborate when they co-broker deals together, with the ability to CC each other and add teammates to deal teams when needed.
+              Tyler Bradford is the admin who has org-level visibility across all 8 teams. He also has his own broker team account (Convoy Austin) for his personal brokerage operations.
             </p>
             <p>
-              <strong>How Profile Switcher works:</strong> Since Convoy is broker-only, Tyler is always in Broker Mode. There's no mode switcher in the footer because he only has one role. Tyler sees all broker features (Deals, Network, Market, Files, Create Deal) consistently.
+              <strong>How Profile Switcher works:</strong> Since Tyler only has one role (Broker), there's no profile switcher in the footer—he's always in Broker Mode. Tyler sees all broker features consistently.
             </p>
             <p>
-              <strong>Key simplification:</strong> For single-role organizations, Design Option 1 is effectively the same as a standard broker experience. No mode switching is needed, making it the simplest possible implementation.
+              <strong>Sidebar behavior:</strong> All features show data from Convoy Austin account only:
+            </p>
+            <ul className="list-disc list-inside space-y-1 text-sm">
+              <li><strong>Green dot (Broker):</strong> Create Deal, Deals, Network, Market, Files - shows data from Convoy Austin only</li>
+              <li><strong>Green dot (Broker):</strong> Vaults - shows vaults shared with Convoy Austin only</li>
+            </ul>
+            <p>
+              <strong>Key simplification:</strong> For single-role organizations, Design Option 1 works like a standard broker experience. The multi-team structure adds organizational complexity but not profile switching complexity.
             </p>
           </div>
         </div>
@@ -1095,9 +1125,9 @@ function ConvoyDesignOption2() {
         </div>
       </div>
 
-      {/* Account */}
+      {/* Accounts */}
       <div>
-        <span className="mb-4 block font-mono text-xs font-semibold uppercase tracking-wider text-muted-foreground">Account</span>
+        <span className="mb-4 block font-mono text-xs font-semibold uppercase tracking-wider text-muted-foreground">Accounts</span>
         <div className="grid gap-3 md:grid-cols-2">
           <div className="rounded-lg border bg-card">
             <div className="flex items-center gap-3 p-2">
@@ -1106,14 +1136,34 @@ function ConvoyDesignOption2() {
               </div>
               <div className="flex flex-1 flex-col gap-0.5">
                 <div className="flex items-center gap-2">
-                  <span className="text-sm font-semibold">Convoy Capital - Tyler's Team</span>
+                  <span className="text-sm font-semibold">Convoy Austin</span>
                   <span className="inline-flex h-5 items-center gap-1.5 rounded-full border px-2 text-xs font-medium">
                     <span className="h-1.5 w-1.5 rounded-full bg-[#3E9B70]" />
                     Broker
                   </span>
                 </div>
                 <span className="text-xs text-muted-foreground">
-                  One of 8 separate broker teams. Data is isolated but teams can collaborate on co-brokered deals.
+                  Tyler's brokerage team. One of 8 separate teams under Convoy Capital.
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div className="rounded-lg border bg-card opacity-50">
+            <div className="flex items-center gap-3 p-2">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-muted">
+                <Briefcase className="h-4 w-4" />
+              </div>
+              <div className="flex flex-1 flex-col gap-0.5">
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-semibold">Convoy Dallas</span>
+                  <span className="inline-flex h-5 items-center gap-1.5 rounded-full border px-2 text-xs font-medium">
+                    <span className="h-1.5 w-1.5 rounded-full bg-[#3E9B70]" />
+                    Broker
+                  </span>
+                </div>
+                <span className="text-xs text-muted-foreground">
+                  Another team under Convoy. Tyler doesn't belong to this account.
                 </span>
               </div>
             </div>
@@ -1138,7 +1188,7 @@ function ConvoyDesignOption2() {
             <div className="border-t" />
             <div className="bg-background p-2">
               <p className="text-xs leading-relaxed text-muted-foreground">
-                Admin of Convoy Capital organization. Manages his own brokerage team while overseeing the entire organization of 8 separate teams.
+                Admin of Convoy Capital organization. Belongs to Convoy Austin team account for his personal brokerage work. Has org-level visibility across all 8 teams.
               </p>
             </div>
             <div className="border-t" />
@@ -1150,7 +1200,7 @@ function ConvoyDesignOption2() {
                   Broker
                 </span>
               </div>
-              <span className="text-xs text-muted-foreground">Convoy - Tyler's Team</span>
+              <span className="text-xs text-muted-foreground">Convoy Austin</span>
             </div>
           </div>
         </div>
@@ -1163,19 +1213,23 @@ function ConvoyDesignOption2() {
           <h3 className="text-lg font-medium">Multi-team brokerage with separate accounts for data privacy</h3>
           <div className="space-y-3 text-sm text-muted-foreground leading-relaxed">
             <p>
-              Convoy Capital operates with 8 separate broker teams under one organization. Tyler Bradford is the admin who oversees all teams while also running his own brokerage operations.
+              Convoy Capital operates with 8 separate broker teams under one organization. Each team wants their lender and sponsor contacts protected from the other teams. However, brokers can still collaborate when they co-broker deals together—they can CC each other and add teammates to deal teams when needed.
             </p>
             <p>
-              Each team maintains separate data to protect their lender and sponsor contacts from each other. However, brokers can still collaborate when they co-broker deals together, with the ability to CC each other and add teammates to deal teams when needed.
+              Tyler Bradford is the admin who has org-level visibility across all 8 teams. He also has his own broker team account (Convoy Austin) for his personal brokerage operations.
             </p>
             <p>
-              Tyler's User Profile links him to the Convoy broker account (his specific team). This structure allows for both data isolation and selective collaboration—teams work independently but can coordinate on specific deals when beneficial.
+              <strong>How Unified Experience works:</strong> Since Tyler only has one role (Broker), he sees all broker features. The sidebar shows standard broker navigation without role indicators (no dual-role complexity like BWE).
             </p>
             <p>
-              <strong>How Unified Experience works:</strong> Since Tyler only has one role (Broker), he sees all broker features in a unified view. No role indicators needed because there's only one account type. This is simpler than BWE's dual-role scenario.
+              <strong>Sidebar behavior:</strong> All features show data from Convoy Austin account only (Tyler's specific team):
             </p>
+            <ul className="list-disc list-inside space-y-1 text-sm">
+              <li>Create Deal, Deals, Network, Market, Files - shows data from Convoy Austin only</li>
+              <li>Vaults - shows vaults shared with Convoy Austin only</li>
+            </ul>
             <p>
-              <strong>Key benefit:</strong> The platform supports organizational hierarchy where one person can be an admin with org-level visibility while also being a member of a specific team for their day-to-day brokerage work.
+              <strong>Key benefit:</strong> The platform supports organizational hierarchy where Tyler can be an admin with org-level management visibility while also being a member of a specific team (Convoy Austin) for his day-to-day brokerage work.
             </p>
           </div>
         </div>
@@ -1526,9 +1580,9 @@ function ConvoyDesignOption3() {
         </div>
       </div>
 
-      {/* Account */}
+      {/* Accounts */}
       <div>
-        <span className="mb-4 block font-mono text-xs font-semibold uppercase tracking-wider text-muted-foreground">Account</span>
+        <span className="mb-4 block font-mono text-xs font-semibold uppercase tracking-wider text-muted-foreground">Accounts</span>
         <div className="grid gap-3 md:grid-cols-2">
           <div className="rounded-lg border bg-card">
             <div className="flex items-center gap-3 p-2">
@@ -1537,14 +1591,34 @@ function ConvoyDesignOption3() {
               </div>
               <div className="flex flex-1 flex-col gap-0.5">
                 <div className="flex items-center gap-2">
-                  <span className="text-sm font-semibold">Convoy Capital - Tyler's Team</span>
+                  <span className="text-sm font-semibold">Convoy Austin</span>
                   <span className="inline-flex h-5 items-center gap-1.5 rounded-full border px-2 text-xs font-medium">
                     <span className="h-1.5 w-1.5 rounded-full bg-[#3E9B70]" />
                     Broker
                   </span>
                 </div>
                 <span className="text-xs text-muted-foreground">
-                  One of 8 separate broker teams. Data is isolated but teams can collaborate on co-brokered deals.
+                  Tyler's brokerage team. One of 8 separate teams under Convoy Capital.
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div className="rounded-lg border bg-card opacity-50">
+            <div className="flex items-center gap-3 p-2">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-muted">
+                <Briefcase className="h-4 w-4" />
+              </div>
+              <div className="flex flex-1 flex-col gap-0.5">
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-semibold">Convoy Dallas</span>
+                  <span className="inline-flex h-5 items-center gap-1.5 rounded-full border px-2 text-xs font-medium">
+                    <span className="h-1.5 w-1.5 rounded-full bg-[#3E9B70]" />
+                    Broker
+                  </span>
+                </div>
+                <span className="text-xs text-muted-foreground">
+                  Another team under Convoy. Tyler doesn't belong to this account.
                 </span>
               </div>
             </div>
@@ -1569,7 +1643,7 @@ function ConvoyDesignOption3() {
             <div className="border-t" />
             <div className="bg-background p-2">
               <p className="text-xs leading-relaxed text-muted-foreground">
-                Admin of Convoy organization. Global Person identity exists independently, with a single Membership linking to Convoy broker account. Admin privileges are tied to the Person entity.
+                Admin of Convoy Capital organization. Belongs to Convoy Austin team account for his personal brokerage work. Has org-level visibility across all 8 teams.
               </p>
             </div>
             <div className="border-t" />
@@ -1588,7 +1662,7 @@ function ConvoyDesignOption3() {
                   Broker
                 </span>
               </div>
-              <span className="text-xs text-muted-foreground">Convoy - Tyler's Team</span>
+              <span className="text-xs text-muted-foreground">Convoy Austin</span>
             </div>
           </div>
         </div>
@@ -1601,19 +1675,26 @@ function ConvoyDesignOption3() {
           <h3 className="text-lg font-medium">Multi-team brokerage with separate accounts for data privacy</h3>
           <div className="space-y-3 text-sm text-muted-foreground leading-relaxed">
             <p>
-              Convoy Capital operates with 8 separate broker teams under one organization. Tyler Bradford is the admin who oversees all teams while also running his own brokerage operations.
+              Convoy Capital operates with 8 separate broker teams under one organization. Each team wants their lender and sponsor contacts protected from the other teams. However, brokers can still collaborate when they co-broker deals together—they can CC each other and add teammates to deal teams when needed.
             </p>
             <p>
-              Each team maintains separate data to protect their lender and sponsor contacts from each other. However, brokers can still collaborate when they co-broker deals together, with the ability to CC each other and add teammates to deal teams when needed.
+              Tyler Bradford is the admin who has org-level visibility across all 8 teams. He also has his own broker team account (Convoy Austin) for his personal brokerage operations.
             </p>
             <p>
-              <strong>Person-Centric Architecture:</strong> Tyler's global Person identity (person_tb_001) exists independently. A single Membership links this Person to the Convoy broker account. Account_user is only for authentication. Admin privileges are tied to the Person entity, not to profiles.
+              <strong>Person-Centric Architecture:</strong> Tyler's global Person identity (person_tb_001) exists independently. A single Membership links this Person to Convoy Austin account. Account_user is only for authentication. Admin privileges are tied to the Person entity, not to memberships.
             </p>
             <p>
-              <strong>Key benefit:</strong> For broker-only scenarios, the Person-centric model simplifies identity management. Everything flows from the Person entity—permissions, admin status, and account access all centralized in one place.
+              <strong>Sidebar behavior:</strong> All features show data from Convoy Austin account only (Tyler's specific team):
+            </p>
+            <ul className="list-disc list-inside space-y-1 text-sm">
+              <li>Create Deal, Deals, Network, Market, Files - shows data from Convoy Austin only</li>
+              <li>Vaults - shows vaults shared with Convoy Austin only</li>
+            </ul>
+            <p>
+              <strong>Key benefit:</strong> Person-centric model simplifies identity management. Everything flows from the Person entity—admin status, account access, all centralized.
             </p>
             <p>
-              <strong>UX:</strong> From Tyler's perspective, this works identically to Design Option 2 (unified experience). The difference is purely in the underlying data model.
+              <strong>UX:</strong> From Tyler's perspective, this works identically to Design Option 2. The difference is purely in the underlying data model (Person + Membership vs User Profile).
             </p>
           </div>
         </div>
