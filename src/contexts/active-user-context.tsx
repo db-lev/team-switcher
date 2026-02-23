@@ -1,19 +1,20 @@
 "use client"
 
 import * as React from "react"
+import { grahamGilreath, type User } from "@/lib/demo-data"
 
 type ActiveUserContextType = {
-  activeUserId: string | null
-  setActiveUserId: (userId: string | null) => void
+  user: User
 }
 
 const ActiveUserContext = React.createContext<ActiveUserContextType | null>(null)
 
 export function ActiveUserProvider({ children }: { children: React.ReactNode }) {
-  const [activeUserId, setActiveUserId] = React.useState<string | null>(null)
+  // For now, always Graham Gilreath
+  const user = grahamGilreath
 
   return (
-    <ActiveUserContext.Provider value={{ activeUserId, setActiveUserId }}>
+    <ActiveUserContext.Provider value={{ user }}>
       {children}
     </ActiveUserContext.Provider>
   )

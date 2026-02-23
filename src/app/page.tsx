@@ -704,10 +704,10 @@ function BWEDesignOption1() {
               <strong>How Profile Switcher works:</strong> Graham uses the mode switcher in the sidebar footer to toggle between Broker Mode and Lender Mode. This switches which account he's operating under—all the data changes.
             </p>
             <p>
-              <strong>In Broker Mode (BWE Brokerage account):</strong> Sidebar shows Create Deal, Deals, Network, Market, Files, and Vaults. ALL data shown is from the BWE Brokerage account only—his broker deals, broker network contacts, broker files, vaults shared with the brokerage account.
+              <strong>In Broker Mode (BWE Brokerage account):</strong> Sidebar shows Create Deal, Deals, Network, Market, Files, and Vaults. ALL data shown is from the BWE Brokerage account only—his broker deals, broker network contacts, broker files, broker market data, vaults shared with the brokerage account.
             </p>
             <p>
-              <strong>In Lender Mode (BWE Lending account):</strong> Sidebar shows only Network and Vaults. ALL data shown is from the BWE Lending account only—lender network contacts, vaults shared with the lending account. Broker features (Deals, Market, Files, Create Deal) are completely hidden because lenders don't use those features.
+              <strong>In Lender Mode (BWE Lending account):</strong> Sidebar shows only Vaults. ALL data shown is from the BWE Lending account only—vaults shared with the lending account. Broker features (Deals, Network, Market, Files, Create Deal) are completely hidden. Network is not yet available for lenders in this simplified implementation.
             </p>
             <p>
               <strong>Key limitation:</strong> Graham can't see data from both accounts simultaneously. When he's in Broker Mode looking at his broker deals, he can't see his lender network contacts at the same time. He must switch modes to view different account data. This is the simplest implementation but requires manual mode switching to move between account contexts.

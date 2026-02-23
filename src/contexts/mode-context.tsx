@@ -1,30 +1,41 @@
 "use client"
 
 import * as React from "react"
+import type { AccountType } from "@/lib/demo-data"
 
-export type UserMode = 'broker' | 'lender' | 'borrower'
-
-type ModeContextType = {
-  mode: UserMode
-  setMode: (mode: UserMode) => void
+type ActiveRoleContextType = {
+  activeRole: AccountType
+  setActiveRole: (role: AccountType) => void
 }
 
-const ModeContext = React.createContext<ModeContextType | null>(null)
+const ActiveRoleContext = React.createContext<ActiveRoleContextType | null>(null)
 
-export function ModeProvider({ children }: { children: React.ReactNode }) {
-  const [mode, setMode] = React.useState<UserMode>('broker')
+export function ActiveRoleProvider({ children }: { children: React.ReactNode }) {
+  // Default to broker role
+  const [activeRole, setActiveRole] = React.useState<AccountType>('broker')
 
   return (
-    <ModeContext.Provider value={{ mode, setMode }}>
+    <ActiveRoleContext.Provider value={{ activeRole, setActiveRole }}>
       {children}
-    </ModeContext.Provider>
+    </ActiveRoleContext.Provider>
   )
 }
 
-export function useMode() {
-  const context = React.useContext(ModeContext)
+export function useActiveRole() {
+  const context = React.useContext(ActiveRoleContext)
   if (!context) {
-    throw new Error("useMode must be used within a ModeProvider")
+    throw new Error("useActiveRole must be used within an ActiveRoleProvider")
   }
   return context
 }
+
+// Legacy export for compatibility
+export type UserMode = "broker" | "lender" | "borrower"
+export const useMode = () => {
+  const { activeRole, setActiveRole } = useActiveRole()
+  return {
+    mode: activeRole as UserMode,
+    setMode: (mode: UserMode) => setActiveRole(mode === 'borrower' ? 'broker' : mode as AccountType)
+  }
+}
+export { ActiveRoleProvider as ModeProvider }

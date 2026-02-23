@@ -492,23 +492,33 @@ export function AppSidebar() {
           { title: "Vaults", url: "/vaults", icon: Vault, roles: ["Broker"], tooltip: "Shows vaults shared with BWE Brokerage account only" },
         ]
       } else {
-        // Lender mode
-        platformItems = [
-          { title: "Network", url: "/network", icon: Network, roles: ["Lender"], tooltip: "Shows network contacts from BWE Lending account only" },
-        ]
+        // Lender mode - NO Network for lenders in D1
+        platformItems = []
         actions = []
         shared = [
           { title: "Vaults", url: "/vaults", icon: Vault, roles: ["Lender"], tooltip: "Shows vaults shared with BWE Lending account only" },
         ]
       }
     } else if (useCase === 'Convoy') {
-      platformItems = navItems.map(item => ({ ...item, roles: ["Broker"] }))
-      actions = actionItems.map(item => ({ ...item, roles: ["Broker"] }))
-      shared = sharedItems.map(item => ({ ...item, roles: ["Broker"] }))
+      // Convoy is broker-only, always shows broker features
+      platformItems = [
+        { title: "Deals", url: "/deals", icon: FileText, roles: ["Broker"], tooltip: "Shows deals from Convoy Austin account only" },
+        { title: "Network", url: "/network", icon: Network, roles: ["Broker"], tooltip: "Shows network contacts from Convoy Austin account only" },
+        { title: "Market", url: "/market", icon: Globe, roles: ["Broker"], tooltip: "Shows market data from Convoy Austin account only" },
+        { title: "Files", url: "/files", icon: Folder, roles: ["Broker"], tooltip: "Shows files from Convoy Austin account only" },
+      ]
+      actions = [
+        { title: "Create Deal", url: "/create-deal", icon: Plus, roles: ["Broker"], tooltip: "Creates deal under Convoy Austin account" },
+      ]
+      shared = [
+        { title: "Vaults", url: "/vaults", icon: Vault, roles: ["Broker"], tooltip: "Shows vaults shared with Convoy Austin account only" },
+      ]
     } else if (useCase === 'Leverage') {
-      platformItems = [{ title: "Network", url: "/network", icon: Network, roles: ["Lender"] }]
+      platformItems = []
       actions = []
-      shared = sharedItems.map(item => ({ ...item, roles: ["Lender"] }))
+      shared = [
+        { title: "Vaults", url: "/vaults", icon: Vault, roles: ["Lender"], tooltip: "Shows vaults shared with their specific lender account only" },
+      ]
     }
   } else if (designOption === 2 || designOption === 3) {
     // Design Option 2 & 3: Show all items with role indicators

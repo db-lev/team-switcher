@@ -49,6 +49,11 @@ export function NavMain({
   actions,
   linkComponent: LinkComponent = "a",
 }: NavMainProps) {
+  // Don't render the group if there are no items
+  if (items.length === 0 && !actions) {
+    return null
+  }
+  
   return (
     <SidebarGroup>
       {label && <SidebarGroupLabel>{label}</SidebarGroupLabel>}

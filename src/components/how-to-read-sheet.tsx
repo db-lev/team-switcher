@@ -35,92 +35,65 @@ export function HowToReadSheet() {
               
               {/* What This Is */}
               <div className="flex flex-col gap-3">
-                <h3 className="font-semibold">The 3×3 Grid</h3>
+                <h3 className="font-semibold">What You're Looking At</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">
-                  This demo shows <strong>3 use cases</strong> across <strong>3 design options</strong> = <strong>9 total combinations</strong>. Use the team switcher to explore each one.
+                  The <strong>team switcher</strong> in the sidebar shows <strong>3 use cases</strong> × <strong>3 design options</strong> = <strong>9 combinations</strong>. Each shows how different role structures and architectures would work.
                 </p>
-                <div className="rounded-lg bg-muted/30 p-3 text-xs space-y-2">
-                  <div className="flex items-center gap-2">
-                    <span className="inline-flex h-4 items-center rounded px-1 text-[10px] font-medium text-white bg-orange-500">D1</span>
-                    <span className="font-medium">Profile Switcher</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="inline-flex h-4 items-center rounded px-1 text-[10px] font-medium text-white bg-blue-500">D2</span>
-                    <span className="font-medium">Unified Experience</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="inline-flex h-4 items-center rounded px-1 text-[10px] font-medium text-white bg-purple-500">D3</span>
-                    <span className="font-medium">Person-Centric</span>
-                  </div>
-                </div>
               </div>
 
               <div className="border-t" />
 
-              {/* The 3 Use Cases */}
+              {/* Launch Reality */}
               <div className="flex flex-col gap-4">
-                <h3 className="font-semibold">The 3 Use Cases</h3>
-                
-                <div className="space-y-3 text-sm text-muted-foreground leading-relaxed">
-                  <div>
-                    <strong className="text-foreground">BWE</strong> - Dual-role evolution. Lender who added brokerage. Graham belongs to both accounts.
-                  </div>
-                  <div>
-                    <strong className="text-foreground">Convoy Capital</strong> - Multi-team broker-only. Tyler manages one of 8 broker teams.
-                  </div>
-                  <div>
-                    <strong className="text-foreground">Leverage Companies</strong> - Multi-entity lender. Two legal companies, same team.
-                  </div>
-                </div>
-              </div>
-
-              <div className="border-t" />
-
-              {/* Design Option 1 */}
-              <div className="flex flex-col gap-4">
-                <h3 className="font-semibold">Design Option 1: Profile Switcher</h3>
+                <h3 className="font-semibold">At Launch (Reality)</h3>
                 
                 <div className="space-y-3 text-sm text-muted-foreground leading-relaxed">
                   <p>
-                    User is always in <strong className="text-foreground">one mode</strong> (Broker OR Lender). Mode switcher in sidebar footer changes which features are visible.
+                    <strong className="text-foreground">Brokers & Borrowers</strong> get full access—all Platform and Actions features (same as always)
                   </p>
                   <p>
-                    <strong className="text-foreground">Pro:</strong> Simplest implementation. Clean separation. <br />
-                    <strong className="text-foreground">Con:</strong> Must manually switch to see other features.
+                    <strong className="text-foreground">Lenders & Sponsors</strong> only get Vaults (CRM users, not customers)
+                  </p>
+                  <p className="text-xs">
+                    <em>Sponsors = borrowers in someone's CRM, basically same behavior as Lenders</em>
                   </p>
                 </div>
               </div>
 
               <div className="border-t" />
 
-              {/* Design Option 2 */}
+              {/* Future Planning */}
               <div className="flex flex-col gap-4">
-                <h3 className="font-semibold">Design Option 2: Unified Experience</h3>
+                <h3 className="font-semibold">Planning for the Future</h3>
                 
                 <div className="space-y-3 text-sm text-muted-foreground leading-relaxed">
                   <p>
-                    User sees <strong className="text-foreground">all features</strong> from both roles simultaneously. Role indicators (colored dots) show which account each feature uses.
+                    This demo assumes that <strong className="text-foreground">ONE feature becomes accessible to non-customers</strong>.
                   </p>
                   <p>
-                    <strong className="text-foreground">Pro:</strong> No mode switching, everything in one view. <br />
-                    <strong className="text-foreground">Con:</strong> More complex policies and permissions.
+                    We picked <strong className="text-foreground">Network</strong>. So Lenders and Sponsors can use Network + Vaults (not just Vaults).
+                  </p>
+                  <p className="text-xs">
+                    This lets us plan the architecture for "more than just Vaults" for CRM users.
                   </p>
                 </div>
               </div>
 
               <div className="border-t" />
 
-              {/* Design Option 3 */}
+              {/* Design Options */}
               <div className="flex flex-col gap-4">
-                <h3 className="font-semibold">Design Option 3: Person-Centric</h3>
+                <h3 className="font-semibold">The 3 Design Options</h3>
                 
                 <div className="space-y-3 text-sm text-muted-foreground leading-relaxed">
                   <p>
-                    Same UX as Option 2, but <strong className="text-foreground">restructured data model</strong>. Person is central identity. "User Profile" becomes "Membership."
+                    <strong className="text-foreground">D1: Profile Switcher</strong> - User switches between Broker/Lender modes. Features and data change based on active mode.
                   </p>
                   <p>
-                    <strong className="text-foreground">Pro:</strong> Unified login story, simpler CRM contact flow. <br />
-                    <strong className="text-foreground">Difference:</strong> Architecture change, not UX change.
+                    <strong className="text-foreground">D2: Unified Experience</strong> - All features visible simultaneously. Role indicators show which account each feature uses.
+                  </p>
+                  <p>
+                    <strong className="text-foreground">D3: Person-Centric</strong> - Same UX as D2, but Person is the central identity instead of User Profile.
                   </p>
                 </div>
               </div>
@@ -130,7 +103,7 @@ export function HowToReadSheet() {
               {/* Try It */}
               <div className="rounded-lg bg-muted/50 p-4">
                 <p className="text-sm text-muted-foreground leading-relaxed">
-                  <strong className="text-foreground">Try it:</strong> Switch teams in the sidebar (grouped by use case). Watch how navigation and user cards change based on the design option.
+                  <strong className="text-foreground">Try it:</strong> Switch teams in the sidebar and watch the navigation change. Each combination shows a different account structure scenario.
                 </p>
               </div>
             </div>

@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ClientLayout } from "@/components/client-layout";
-import { teams } from "@/components/app-sidebar";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { TeamProvider } from "@/contexts/team-context";
 import { ActiveUserProvider } from "@/contexts/active-user-context";
@@ -32,15 +31,15 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <TeamProvider defaultTeam={teams[0]}>
-          <ActiveUserProvider>
-            <TooltipProvider>
+        <TooltipProvider>
+          <TeamProvider>
+            <ActiveUserProvider>
               <ClientLayout>
                 {children}
               </ClientLayout>
-            </TooltipProvider>
-          </ActiveUserProvider>
-        </TeamProvider>
+            </ActiveUserProvider>
+          </TeamProvider>
+        </TooltipProvider>
       </body>
     </html>
   );

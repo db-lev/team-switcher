@@ -11,6 +11,7 @@ import {
   type LucideIcon,
 } from "lucide-react"
 import Image from "next/image"
+import { useRouter } from "next/navigation"
 
 import {
   Avatar,
@@ -90,6 +91,7 @@ export function NavUser({
   onSignOut,
 }: NavUserProps) {
   const { isMobile } = useSidebar()
+  const router = useRouter()
   const initials = getInitials(user.name)
   
   // Get active profile config if using profile switcher
@@ -182,11 +184,11 @@ export function NavUser({
               </>
             )}
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={() => router.push('/settings')}>
               <User />
               Account
             </DropdownMenuItem>
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={() => router.push('/settings')}>
               <Settings />
               Settings
             </DropdownMenuItem>
