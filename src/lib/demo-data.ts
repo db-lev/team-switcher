@@ -11,10 +11,13 @@ export interface Account {
   accountNumber?: string
   members: number
   description: string
+  location: string
+  about: string
 }
 
 export interface Organization {
   id: string
+  orgId: string // Display ID like "4381"
   name: string
   logo: string
   aliases: string
@@ -27,6 +30,7 @@ export interface Organization {
 
 export interface User {
   id: string
+  userId: string // Display ID like "54642"
   name: string
   email: string
   avatar: any
@@ -38,6 +42,7 @@ export interface User {
 // BWE Organization data
 export const bweOrganization: Organization = {
   id: 'bwe',
+  orgId: '4381',
   name: 'BWE',
   logo: 'B',
   aliases: 'Bellwether Enterprise, BELLWETHER ENT MTG INVS LLC',
@@ -53,6 +58,8 @@ export const bweOrganization: Organization = {
       accountNumber: '10547',
       members: 4,
       description: 'Primary brokerage account for running outreach campaigns and managing placements to external lenders.',
+      location: '1375 E. 9th Street Suite 2400, Cleveland, OH 44114',
+      about: 'BWE Brokerage specializes in commercial real estate debt placement services. Our team works with borrowers to find optimal financing solutions across a wide network of lenders.\n\nWhen deals don\'t fit our direct lending criteria through BWE Lending, our brokerage team brokers them out to external lenders, ensuring clients receive the best possible financing terms.',
     },
     {
       id: 'bwe-lending',
@@ -61,6 +68,8 @@ export const bweOrganization: Organization = {
       accountNumber: '4381',
       members: 58,
       description: 'Receives inbound placements from other brokers when BWE provides direct financing for deals.',
+      location: '1375 E. 9th Street Suite 2400, Cleveland, OH 44114',
+      about: 'BWE Lending is a middle-market debt fund providing direct financing for commercial real estate transactions. We focus on deals that align with our lending criteria and portfolio strategy.\n\nOur lending team evaluates incoming loan requests and directly underwrites deals, while maintaining strong relationships with brokers across the market. We are deeply embedded in the CRE lending ecosystem with 43 different accounts having BWE as a lender in their CRM.',
     },
   ],
 }
@@ -68,6 +77,7 @@ export const bweOrganization: Organization = {
 // Graham Gilreath user data
 export const grahamGilreath: User = {
   id: 'graham-gilreath',
+  userId: '54642',
   name: 'Graham Gilreath',
   email: 'graham.gilreath@bwe.com',
   avatar: avatar4,
@@ -81,6 +91,7 @@ export const bweTeamMembers: User[] = [
   grahamGilreath,
   {
     id: 'thomas-smith',
+    userId: '54643',
     name: 'Thomas Smith',
     email: 'thomas.smith@bwe.com',
     avatar: avatar4, // reusing for now
@@ -90,6 +101,7 @@ export const bweTeamMembers: User[] = [
   },
   {
     id: 'daniel-patton',
+    userId: '54644',
     name: 'Daniel Patton',
     email: 'daniel.patton@bwe.com',
     avatar: avatar4, // reusing for now
@@ -99,6 +111,7 @@ export const bweTeamMembers: User[] = [
   },
   {
     id: 'henry-high',
+    userId: '54645',
     name: 'Henry High',
     email: 'henry.high@bwe.com',
     avatar: avatar4, // reusing for now

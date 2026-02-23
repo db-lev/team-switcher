@@ -600,12 +600,15 @@ function BWEDesignOption1() {
           {/* BWE Brokerage Account */}
           <div className="rounded-lg border bg-card">
             <div className="flex items-center gap-3 p-2">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-muted">
-                <Briefcase className="h-4 w-4" />
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#3E9B70]/20">
+                <Briefcase className="h-4 w-4 text-[#3E9B70]" />
               </div>
               <div className="flex flex-1 flex-col gap-0.5">
                 <div className="flex items-center gap-2">
                   <span className="text-sm font-semibold">BWE Brokerage</span>
+                  <span className="font-mono text-xs rounded-md border bg-muted px-1.5 py-0.5">
+                    10547
+                  </span>
                   <span className="inline-flex h-5 items-center gap-1.5 rounded-full border px-2 text-xs font-medium">
                     <span className="h-1.5 w-1.5 rounded-full bg-[#3E9B70]" />
                     Broker
@@ -621,12 +624,15 @@ function BWEDesignOption1() {
           {/* BWE Lending Account */}
           <div className="rounded-lg border bg-card">
             <div className="flex items-center gap-3 p-2">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-muted">
-                <Landmark className="h-4 w-4" />
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#3880E8]/20">
+                <Landmark className="h-4 w-4 text-[#3880E8]" />
               </div>
               <div className="flex flex-1 flex-col gap-0.5">
                 <div className="flex items-center gap-2">
                   <span className="text-sm font-semibold">BWE Lending</span>
+                  <span className="font-mono text-xs rounded-md border bg-muted px-1.5 py-0.5">
+                    4381
+                  </span>
                   <span className="inline-flex h-5 items-center gap-1.5 rounded-full border px-2 text-xs font-medium">
                     <span className="h-1.5 w-1.5 rounded-full bg-[#3880E8]" />
                     Lender
@@ -652,7 +658,12 @@ function BWEDesignOption1() {
                 <Image src={avatar4} alt="Graham Gilreath" width={40} height={40} className="h-full w-full object-cover" />
               </div>
               <div className="flex flex-1 flex-col gap-0.5">
-                <span className="text-sm font-semibold">Graham Gilreath</span>
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-semibold">Graham Gilreath</span>
+                  <span className="font-mono text-xs rounded-md border bg-muted px-1.5 py-0.5">
+                    54642
+                  </span>
+                </div>
                 <span className="text-xs text-muted-foreground">graham.gilreath@bwe.com</span>
               </div>
             </div>
