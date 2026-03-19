@@ -3,8 +3,13 @@
 import { useActiveUser } from "@/contexts/active-user-context"
 import { useTeam } from "@/contexts/team-context"
 import Image from "next/image"
-import { Landmark, BookOpen } from "lucide-react"
+import { Landmark, BookOpen, Info } from "lucide-react"
 import { getAccountPalette, getAccountsByUser, SCENARIOS } from "@/lib/demo-data"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 
 export default function DashboardPage() {
   return (
@@ -45,6 +50,14 @@ function UseCaseView() {
               <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
                 <Landmark className="h-3.5 w-3.5" />
                 Has Lender Programs
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Info className="h-3.5 w-3.5 cursor-default" />
+                  </TooltipTrigger>
+                  <TooltipContent side="right" className="max-w-xs">
+                    We identify a &quot;Lender&quot; via the Org&apos;s Lender Attributes. So to identify &quot;Lender Users&quot;, we need a way to match from User → Person → Org.
+                  </TooltipContent>
+                </Tooltip>
               </div>
             )}
           </div>
@@ -55,47 +68,70 @@ function UseCaseView() {
       <div>
         <span className="mb-3 block font-mono text-xs font-semibold uppercase tracking-wider text-muted-foreground">Accounts</span>
         <div className="grid gap-3 md:grid-cols-2">
-          {organization.accounts.map((account) => {
-            const palette = getAccountPalette(account.id)
-            const AccountIcon = palette.icon
-
-            return (
-              <div key={account.id} className="rounded-lg border bg-card">
-                <div className="flex items-start gap-3 p-4">
-                  <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg ${palette.bg}`}>
-                    <AccountIcon className={`h-5 w-5 ${palette.text}`} />
-                  </div>
-                  <div className="flex flex-1 flex-col gap-1.5">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <span className="text-sm font-semibold">{account.name}</span>
-                      {account.accountNumber && (
-                        <span className="font-mono text-xs rounded-md border bg-muted px-1.5 py-0.5">
-                          {account.accountNumber}
-                        </span>
-                      )}
-                      {account.subscription ? (
-                        <span className="inline-flex h-5 items-center gap-1.5 rounded-full bg-green-500/10 px-2 text-xs font-medium text-green-700">
-                          <span className="relative flex h-2 w-2">
-                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75" />
-                            <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500" />
-                          </span>
-                          Active Subscription
-                        </span>
-                      ) : (
-                        <span className="inline-flex h-5 items-center gap-1.5 rounded-full bg-muted px-2 text-xs font-medium text-muted-foreground">
-                          <span className="h-2 w-2 rounded-full border border-muted-foreground/40" />
-                          No subscription
-                        </span>
-                      )}
+          {organization.accounts.length === 0 ? (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div className="rounded-lg border border-dashed bg-[repeating-linear-gradient(45deg,transparent,transparent_6px,hsl(var(--muted)/0.4)_6px,hsl(var(--muted)/0.4)_7px)] cursor-default">
+                  <div className="flex items-start gap-3 p-4">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-dashed bg-background" />
+                    <div className="flex flex-1 flex-col gap-1.5">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className="text-sm font-semibold text-muted-foreground">No account</span>
+                      </div>
+                      <p className="text-xs text-muted-foreground leading-relaxed">
+                        No account has been created for this user.
+                      </p>
                     </div>
-                    <p className="text-xs text-muted-foreground leading-relaxed">
-                      {account.description}
-                    </p>
                   </div>
                 </div>
-              </div>
-            )
-          })}
+              </TooltipTrigger>
+              <TooltipContent side="bottom" className="max-w-xs">
+                Auto Creating accounts is scary — we can&apos;t say every member of JP Morgan is added to a single Account to see the full team.
+              </TooltipContent>
+            </Tooltip>
+          ) : (
+            organization.accounts.map((account) => {
+              const palette = getAccountPalette(account.id)
+              const AccountIcon = palette.icon
+
+              return (
+                <div key={account.id} className="rounded-lg border bg-card">
+                  <div className="flex items-start gap-3 p-4">
+                    <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg ${palette.bg}`}>
+                      <AccountIcon className={`h-5 w-5 ${palette.text}`} />
+                    </div>
+                    <div className="flex flex-1 flex-col gap-1.5">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className="text-sm font-semibold">{account.name}</span>
+                        {account.accountNumber && (
+                          <span className="font-mono text-xs rounded-md border bg-muted px-1.5 py-0.5">
+                            {account.accountNumber}
+                          </span>
+                        )}
+                        {account.subscription ? (
+                          <span className="inline-flex h-5 items-center gap-1.5 rounded-full bg-green-500/10 px-2 text-xs font-medium text-green-700">
+                            <span className="relative flex h-2 w-2">
+                              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75" />
+                              <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500" />
+                            </span>
+                            Active Subscription
+                          </span>
+                        ) : (
+                          <span className="inline-flex h-5 items-center gap-1.5 rounded-full bg-muted px-2 text-xs font-medium text-muted-foreground">
+                            <span className="h-2 w-2 rounded-full border border-muted-foreground/40" />
+                            No subscription
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-xs text-muted-foreground leading-relaxed">
+                        {account.description}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )
+            })
+          )}
         </div>
       </div>
 
