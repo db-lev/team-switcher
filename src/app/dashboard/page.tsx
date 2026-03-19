@@ -24,7 +24,7 @@ export default function Page() {
         </BreadcrumbList>
       </Breadcrumb>
     )
-    setHeaderActions(<NavActions />)
+    setHeaderActions(undefined)
 
     return () => {
       setHeaderContent(undefined)
