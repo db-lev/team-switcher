@@ -4,7 +4,6 @@ import * as React from "react"
 import { useHeader } from "@/contexts/header-context"
 import { useTeam } from "@/contexts/team-context"
 import { useActiveUser } from "@/contexts/active-user-context"
-import { useMode } from "@/contexts/mode-context"
 import { demoTeamUsers } from "@/components/app-sidebar"
 import Image from "next/image"
 import { Building2, Landmark, Briefcase, User } from "lucide-react"
@@ -33,7 +32,7 @@ export default function SettingsPage() {
   const { setTitle } = useHeader()
   const { activeTeam } = useTeam()
   const { activeUserId } = useActiveUser()
-  const { mode } = useMode()
+  const mode = 'broker'
   
   const [activeTab, setActiveTab] = React.useState<"details" | "org">("details")
 

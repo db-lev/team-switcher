@@ -59,20 +59,8 @@ export default function DealsPage() {
 
   // Determine columns based on team type
   const getColumns = () => {
-    const teamTypes = activeTeam?.types || []
-    const hasBroker = teamTypes.includes("Broker")
-    const hasLender = teamTypes.includes("Lender")
-
-    if (hasBroker && hasLender) {
-      // Dual role: show both
-      return [...baseColumns, lenderColumn, brokerColumn, daysActiveColumn]
-    } else if (hasBroker) {
-      // Broker only: show lender column (where they're sending deals)
-      return [...baseColumns, lenderColumn, daysActiveColumn]
-    } else {
-      // Lender only: show broker column (who sent them deals)
-      return [...baseColumns, brokerColumn, daysActiveColumn]
-    }
+    // Default to broker layout (subscription-gated UI)
+    return [...baseColumns, lenderColumn, daysActiveColumn]
   }
 
   return (

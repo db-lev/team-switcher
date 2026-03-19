@@ -1,18 +1,12 @@
 "use client"
 
 import * as React from "react"
-import { 
-  grahamGilreath, 
-  grahamGilreath2, 
-  frankiePaparella,
-  bweOrganization, 
-  bweOrganization2, 
-  convoyOrganization,
-  bweTeamMembers, 
-  bweTeamMembers2,
-  convoyTeamMembers,
-  type User, 
-  type Organization 
+import {
+  SCENARIOS,
+  getAccountsByUser,
+  type User,
+  type Organization,
+  type Account,
 } from "@/lib/demo-data"
 import { useTeam } from "@/contexts/team-context"
 
@@ -22,42 +16,43 @@ type ActiveUserContextType = {
   teamMembers: User[]
   activeUserId: string
   setActiveUserId: (id: string) => void
+  activeAccountId: string
+  setActiveAccountId: (id: string) => void
+  activeAccount: Account | undefined
 }
 
 const ActiveUserContext = React.createContext<ActiveUserContextType | null>(null)
 
+const FALLBACK_SCENARIO = Object.values(SCENARIOS)[0]
+
 export function ActiveUserProvider({ children }: { children: React.ReactNode }) {
   const { activeTeam } = useTeam()
-  
-  // Select user, org, and team members based on team name
-  let user: User
-  let organization: Organization
-  let teamMembers: User[]
-  
-  if (activeTeam?.name === "BWE - Profile Switcher 2") {
-    user = grahamGilreath2
-    organization = bweOrganization2
-    teamMembers = bweTeamMembers2
-  } else if (activeTeam?.name === "Convoy Capital") {
-    user = frankiePaparella
-    organization = convoyOrganization
-    teamMembers = convoyTeamMembers
-  } else {
-    user = grahamGilreath
-    organization = bweOrganization
-    teamMembers = bweTeamMembers
-  }
-  
-  // Set initial activeUserId based on selected user
+
+  const scenario = SCENARIOS[activeTeam?.name ?? ''] ?? FALLBACK_SCENARIO
+  const { organization, user, teamMembers } = scenario
+
   const [activeUserId, setActiveUserId] = React.useState(user.id)
-  
-  // Update activeUserId when team changes
+  const [activeAccountId, setActiveAccountId] = React.useState(user.accountMemberships[0] ?? "")
+
   React.useEffect(() => {
     setActiveUserId(user.id)
+    setActiveAccountId(user.accountMemberships[0] ?? "")
   }, [user.id])
 
+  const userAccounts = getAccountsByUser(user, organization)
+  const activeAccount = userAccounts.find(a => a.id === activeAccountId) ?? userAccounts[0]
+
   return (
-    <ActiveUserContext.Provider value={{ user, organization, teamMembers, activeUserId, setActiveUserId }}>
+    <ActiveUserContext.Provider value={{
+      user,
+      organization,
+      teamMembers,
+      activeUserId,
+      setActiveUserId,
+      activeAccountId: activeAccount?.id ?? "",
+      setActiveAccountId,
+      activeAccount,
+    }}>
       {children}
     </ActiveUserContext.Provider>
   )

@@ -6,8 +6,6 @@ import {
   User,
   Settings,
   LogOut,
-  Building2,
-  Landmark,
   type LucideIcon,
 } from "lucide-react"
 import Image from "next/image"
@@ -33,6 +31,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
+import { getAccountPalette, type Account } from "@/lib/demo-data"
 
 function getInitials(name: string): string {
   const parts = name.trim().split(/\s+/)
@@ -42,29 +41,6 @@ function getInitials(name: string): string {
   return name.slice(0, 2).toUpperCase()
 }
 
-type UserMode = 'broker' | 'lender' | 'borrower'
-
-const modeConfig: Record<UserMode, { label: string; icon: React.ElementType; bgColor: string; iconColor: string }> = {
-  broker: {
-    label: "Broker",
-    icon: Building2,
-    bgColor: "bg-[#3E9B70]/20",
-    iconColor: "text-[#3E9B70]",
-  },
-  lender: {
-    label: "Lender",
-    icon: Landmark,
-    bgColor: "bg-[#3880E8]/20",
-    iconColor: "text-[#3880E8]",
-  },
-  borrower: {
-    label: "Borrower",
-    icon: Building2,
-    bgColor: "bg-green-600/20",
-    iconColor: "text-green-600",
-  },
-}
-
 export interface NavUserProps {
   user: {
     name: string
@@ -72,31 +48,28 @@ export interface NavUserProps {
     avatar: string | any
     teamIcon?: LucideIcon
   }
-  /** Subhead text shown under name in sidebar button. If not provided, shows email. */
-  subhead?: string
-  /** Profile switching for Design Option 1. When provided, shows profile selector in menu. */
-  profileSwitcher?: {
-    availableProfiles: UserMode[]
-    activeProfile: UserMode
-    onProfileChange: (profile: UserMode) => void
-  }
-  /** When provided, renders a "Log out" item at the bottom with a separator. */
+  /** Currently active account */
+  activeAccount?: Account
+  /** All accounts available to the user. Omit or pass undefined to hide account switcher. */
+  availableAccounts?: Account[]
+  /** Called when user picks an account from the switcher */
+  onAccountChange?: (accountId: string) => void
+  /** When provided, renders a "Log out" item with a separator. */
   onSignOut?: () => void
 }
 
 export function NavUser({
   user,
-  subhead,
-  profileSwitcher,
+  activeAccount,
+  availableAccounts,
+  onAccountChange,
   onSignOut,
 }: NavUserProps) {
   const { isMobile } = useSidebar()
   const router = useRouter()
   const initials = getInitials(user.name)
-  
-  // Get active profile config if using profile switcher
-  const activeProfileConfig = profileSwitcher ? modeConfig[profileSwitcher.activeProfile] : null
-  const dotColor = activeProfileConfig ? (profileSwitcher.activeProfile === 'broker' ? 'bg-[#3E9B70]' : 'bg-[#3880E8]') : null
+
+  const activePalette = activeAccount ? getAccountPalette(activeAccount.id) : null
 
   return (
     <SidebarMenu>
@@ -118,14 +91,14 @@ export function NavUser({
                     <AvatarFallback className="rounded-lg">{initials}</AvatarFallback>
                   </Avatar>
                 )}
-                {dotColor && (
-                  <span className={`absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full ${dotColor} ring-2 ring-sidebar`} />
+                {activePalette && (
+                  <span className={`absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full ${activePalette.solid} ring-2 ring-sidebar`} />
                 )}
               </div>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-semibold">{user.name}</span>
                 <span className="truncate text-xs text-muted-foreground">
-                  {subhead || user.email}
+                  {activeAccount?.name ?? user.email}
                 </span>
               </div>
               <ChevronsUpDown className="ml-auto size-4" />
@@ -157,32 +130,34 @@ export function NavUser({
                 </div>
               </div>
             </DropdownMenuLabel>
-            {profileSwitcher && profileSwitcher.availableProfiles.length > 1 && (
+
+            {availableAccounts && availableAccounts.length > 1 && (
               <>
                 <DropdownMenuSeparator />
                 <DropdownMenuLabel className="text-xs text-muted-foreground">
-                  Profiles
+                  Accounts
                 </DropdownMenuLabel>
                 <DropdownMenuGroup>
-                  {profileSwitcher.availableProfiles.map((profile) => {
-                    const config = modeConfig[profile]
-                    const ProfileIcon = config.icon
+                  {availableAccounts.map((account) => {
+                    const palette = getAccountPalette(account.id)
+                    const AccountIcon = palette.icon
                     return (
                       <DropdownMenuItem
-                        key={profile}
-                        onClick={() => profileSwitcher.onProfileChange(profile)}
+                        key={account.id}
+                        onClick={() => onAccountChange?.(account.id)}
                       >
-                        <div className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-md ${config.bgColor}`}>
-                          <ProfileIcon className={`h-4 w-4 ${config.iconColor}`} />
+                        <div className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-md ${palette.bg}`}>
+                          <AccountIcon className={`h-4 w-4 ${palette.text}`} />
                         </div>
-                        {config.label}
-                        {profileSwitcher.activeProfile === profile && <span className="ml-auto">✓</span>}
+                        {account.name}
+                        {activeAccount?.id === account.id && <span className="ml-auto">✓</span>}
                       </DropdownMenuItem>
                     )
                   })}
                 </DropdownMenuGroup>
               </>
             )}
+
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={() => router.push('/settings')}>
               <User />

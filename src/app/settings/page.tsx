@@ -1,13 +1,11 @@
 "use client"
 
 import * as React from "react"
-import { useRouter } from "next/navigation"
 import { useHeader } from "@/contexts/header-context"
 import { useActiveUser } from "@/contexts/active-user-context"
-import { useActiveRole } from "@/contexts/mode-context"
-import { getAccountsByUser, getUserRole, getAccountIcon, getAccountColor } from "@/lib/demo-data"
+import { getAccountsByUser, getAccountPalette } from "@/lib/demo-data"
 import Image from "next/image"
-import { Building2, User, Briefcase, Users, Info, Plus, FileText, Upload, CreditCard, BarChart3 } from "lucide-react"
+import { Building2, User, Users, FileText, CreditCard, BarChart3, Plus } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
@@ -20,19 +18,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip"
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
 
 type SettingsTab = 
   | "details" 
@@ -44,10 +29,8 @@ type SettingsTab =
   | `${string}-billing`
 
 export default function SettingsPage() {
-  const router = useRouter()
   const { setTitle } = useHeader()
   const { user, organization, teamMembers } = useActiveUser()
-  const { activeRole } = useActiveRole()
   
   const [activeTab, setActiveTab] = React.useState<SettingsTab>("details")
 
@@ -103,7 +86,7 @@ export default function SettingsPage() {
             {/* Job Title */}
             <div>
               <Label htmlFor="jobTitle" className="text-sm font-medium">Job title</Label>
-              <Input id="jobTitle" value={activeRole === 'broker' ? 'Broker' : 'Lender'} readOnly className="bg-muted" />
+              <Input id="jobTitle" value="Member" readOnly className="bg-muted" />
             </div>
 
             {/* Mobile Phone */}
@@ -128,22 +111,19 @@ export default function SettingsPage() {
                   <TableHeader>
                     <TableRow>
                       <TableHead>Account</TableHead>
-                      <TableHead>Type</TableHead>
-                      <TableHead className="text-right">Your Role</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {userAccounts.map((account) => {
-                      const AccountIcon = getAccountIcon(account.type)
-                      const accountColor = getAccountColor(account.type)
-                      const types = Array.isArray(account.type) ? account.type : [account.type]
+                      const palette = getAccountPalette(account.id)
+                      const AccountIcon = palette.icon
                       
                       return (
                         <TableRow key={account.id}>
                           <TableCell>
                             <div className="flex items-center gap-3">
-                              <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-md ${accountColor}/20`}>
-                                <AccountIcon className={`h-4 w-4 ${accountColor.replace('bg-', 'text-')}`} />
+                              <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-md ${palette.bg}`}>
+                                <AccountIcon className={`h-4 w-4 ${palette.text}`} />
                               </div>
                               <div>
                                 <div className="font-medium">{account.name}</div>
@@ -152,20 +132,6 @@ export default function SettingsPage() {
                                 )}
                               </div>
                             </div>
-                          </TableCell>
-                          <TableCell>
-                            <div className="flex items-center gap-1.5">
-                              {types.map((type, idx) => (
-                                <span key={type} className="inline-flex items-center gap-1.5 text-sm">
-                                  <span className={`h-1.5 w-1.5 rounded-full ${type === 'broker' ? 'bg-[#3E9B70]' : 'bg-[#3880E8]'}`} />
-                                  {type === 'broker' ? 'Broker' : 'Lender'}
-                                  {idx < types.length - 1 && <span className="text-muted-foreground">,</span>}
-                                </span>
-                              ))}
-                            </div>
-                          </TableCell>
-                          <TableCell className="text-right font-medium">
-                            {getUserRole(account.id)}
                           </TableCell>
                         </TableRow>
                       )
@@ -228,7 +194,7 @@ export default function SettingsPage() {
                 className="bg-muted" 
               />
               <div className="flex flex-wrap gap-2 mt-2">
-                {organization.domains.split(', ').map((domain, index) => (
+                {(organization.domains ?? '').split(', ').filter(Boolean).map((domain, index) => (
                   <span 
                     key={index}
                     className="inline-flex items-center rounded-full border px-3 py-1 text-sm"
@@ -257,24 +223,20 @@ export default function SettingsPage() {
                   <TableHeader>
                     <TableRow>
                       <TableHead>Account</TableHead>
-                      <TableHead>Type</TableHead>
                       <TableHead>Members</TableHead>
-                      <TableHead className="text-right">Your Role</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {organization.accounts.map((account) => {
-                      const AccountIcon = getAccountIcon(account.type)
-                      const accountColor = getAccountColor(account.type)
-                      const isMember = userAccounts.find(a => a.id === account.id)
-                      const types = Array.isArray(account.type) ? account.type : [account.type]
+                      const palette = getAccountPalette(account.id)
+                      const AccountIcon = palette.icon
                       
                       return (
                         <TableRow key={account.id}>
                           <TableCell>
                             <div className="flex items-center gap-3">
-                              <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-md ${accountColor}/20`}>
-                                <AccountIcon className={`h-4 w-4 ${accountColor.replace('bg-', 'text-')}`} />
+                              <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-md ${palette.bg}`}>
+                                <AccountIcon className={`h-4 w-4 ${palette.text}`} />
                               </div>
                               <div>
                                 <div className="font-medium">{account.name}</div>
@@ -284,21 +246,7 @@ export default function SettingsPage() {
                               </div>
                             </div>
                           </TableCell>
-                          <TableCell>
-                            <div className="flex items-center gap-1.5">
-                              {types.map((type, idx) => (
-                                <span key={type} className="inline-flex items-center gap-1.5 text-sm">
-                                  <span className={`h-1.5 w-1.5 rounded-full ${type === 'broker' ? 'bg-[#3E9B70]' : 'bg-[#3880E8]'}`} />
-                                  {type === 'broker' ? 'Broker' : 'Lender'}
-                                  {idx < types.length - 1 && <span className="text-muted-foreground">,</span>}
-                                </span>
-                              ))}
-                            </div>
-                          </TableCell>
                           <TableCell>{account.members}</TableCell>
-                          <TableCell className="text-right font-medium">
-                            {isMember ? getUserRole(account.id) : '—'}
-                          </TableCell>
                         </TableRow>
                       )
                     })}
@@ -325,7 +273,6 @@ export default function SettingsPage() {
                 <TableRow>
                   <TableHead>Name</TableHead>
                   <TableHead>Contact Information</TableHead>
-                  <TableHead>Role</TableHead>
                   <TableHead>Accounts</TableHead>
                 </TableRow>
               </TableHeader>
@@ -358,20 +305,15 @@ export default function SettingsPage() {
                         </div>
                       </TableCell>
                       <TableCell>
-                        <span className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold">
-                          Admin
-                        </span>
-                      </TableCell>
-                      <TableCell>
                         <div className="flex flex-wrap gap-1">
                           {memberAccounts.map((account) => {
-                            const accountColor = getAccountColor(account.type)
+                            const palette = getAccountPalette(account.id)
                             return (
                               <span 
                                 key={account.id}
                                 className="inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 text-xs"
                               >
-                                <span className={`h-1.5 w-1.5 rounded-full ${accountColor}`} />
+                                <span className={`h-1.5 w-1.5 rounded-full ${palette.solid}`} />
                                 {account.name}
                               </span>
                             )
@@ -394,9 +336,8 @@ export default function SettingsPage() {
       const account = organization.accounts.find(a => a.id === accountId)
       if (!account) return null
 
-      const AccountIcon = getAccountIcon(account.type)
-      const accountColor = getAccountColor(account.type)
-      const types = Array.isArray(account.type) ? account.type : [account.type]
+      const palette = getAccountPalette(account.id)
+      const AccountIcon = palette.icon
 
       return (
       <div className="max-w-2xl">
@@ -415,27 +356,12 @@ export default function SettingsPage() {
         <div className="space-y-6">
           {/* Account Logo & Name */}
           <div className="flex items-center gap-4">
-            <div className={`h-16 w-16 shrink-0 flex items-center justify-center rounded-lg ${accountColor}/20`}>
-              <AccountIcon className={`h-8 w-8 ${accountColor.replace('bg-', 'text-')}`} />
+            <div className={`h-16 w-16 shrink-0 flex items-center justify-center rounded-lg ${palette.bg}`}>
+              <AccountIcon className={`h-8 w-8 ${palette.text}`} />
             </div>
             <div className="flex-1">
               <Label htmlFor="accountName" className="text-sm font-medium">Account Name *</Label>
               <Input id="accountName" value={account.name} readOnly className="bg-muted mt-2" />
-            </div>
-          </div>
-
-          <Separator />
-
-          {/* Account Type */}
-          <div>
-            <Label htmlFor="accountType" className="text-sm font-medium">Account Type</Label>
-            <div className="mt-2 flex items-center gap-2">
-              {types.map((type) => (
-                <span key={type} className="inline-flex h-6 items-center gap-1.5 rounded-full border px-3 text-xs font-medium">
-                  <span className={`h-1.5 w-1.5 rounded-full ${type === 'broker' ? 'bg-[#3E9B70]' : 'bg-[#3880E8]'}`} />
-                  {type === 'broker' ? 'Broker' : 'Lender'}
-                </span>
-              ))}
             </div>
           </div>
 
@@ -489,7 +415,6 @@ export default function SettingsPage() {
                 <TableRow>
                   <TableHead>Name</TableHead>
                   <TableHead>Contact Information</TableHead>
-                  <TableHead>Role</TableHead>
                   <TableHead>Accounts</TableHead>
                 </TableRow>
               </TableHeader>
@@ -522,20 +447,15 @@ export default function SettingsPage() {
                         </div>
                       </TableCell>
                       <TableCell>
-                        <span className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold">
-                          Admin
-                        </span>
-                      </TableCell>
-                      <TableCell>
                         <div className="flex flex-wrap gap-1">
                           {memberAccounts.map((acc) => {
-                            const accColor = getAccountColor(acc.type)
+                            const accPalette = getAccountPalette(acc.id)
                             return (
                               <span 
                                 key={acc.id}
                                 className="inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 text-xs"
                               >
-                                <span className={`h-1.5 w-1.5 rounded-full ${accColor}`} />
+                                <span className={`h-1.5 w-1.5 rounded-full ${accPalette.solid}`} />
                                 {acc.name}
                               </span>
                             )

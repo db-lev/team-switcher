@@ -2,108 +2,44 @@
 
 import * as React from "react"
 import Link from "next/link"
+import Image from "next/image"
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
   SidebarRail,
+  SidebarGroup,
+  SidebarGroupLabel,
+  SidebarMenu,
+  SidebarMenuItem,
+  SidebarMenuButton,
 } from "@/components/ui/sidebar"
 import { NavMain } from "@/components/blocks/nav/nav-main"
 import { NavUser } from "@/components/blocks/nav/nav-user"
 import { TeamSwitcher, type Team } from "@/components/team-switcher"
 import { useActiveUser } from "@/contexts/active-user-context"
-import { useActiveRole } from "@/contexts/mode-context"
 import { useTeam } from "@/contexts/team-context"
 import {
-  Folder,
-  Network,
-  Globe,
-  FileText,
-  Plus,
-  Vault,
-  Landmark,
-  Building2,
-} from "lucide-react"
-import { getAccountsByUser, type AccountType } from "@/lib/demo-data"
-import avatar1 from "@/components/avatars/avatar_1.png"
-import avatar2 from "@/components/avatars/avatar_2.png"
-import avatar4 from "@/components/avatars/avatar_4.png"
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog"
+import { Folder, Network, Globe, FileText, Vault, Building2, Landmark } from "lucide-react"
+import { SCENARIOS, getAccountsByUser, getAccountPalette } from "@/lib/demo-data"
 
-type DemoUser = {
-  id: string
-  name: string
-  email: string
-  avatar: any
-  roles: string[]
-}
-
-export const demoTeamUsers: Record<string, DemoUser[]> = {
-  "BWE - Profile Switcher": [
-    {
-      id: "graham-gilreath",
-      name: "Graham Gilreath",
-      email: "graham.gilreath@bwe.com",
-      avatar: avatar4,
-      roles: ["Broker", "Lender"],
-    },
-  ],
-  "BWE - Profile Switcher 2": [
-    {
-      id: "graham-gilreath-2",
-      name: "Graham Gilreath",
-      email: "graham.gilreath@bwe.com",
-      avatar: avatar4,
-      roles: ["Broker", "Lender"],
-    },
-  ],
-  "Convoy Capital": [
-    {
-      id: "frankie-paparella",
-      name: "Frankie Paparella",
-      email: "frankie@convoy-cap.com",
-      avatar: avatar1,
-      roles: ["Broker"],
-    },
-    {
-      id: "michael-bucaro",
-      name: "Michael Bucaro",
-      email: "mtbucaro@convoy-cap.com",
-      avatar: avatar2,
-      roles: ["Broker"],
-    },
-  ],
-}
-
-const actionItems = [
-  {
-    title: "Create Deal",
-    url: "/create-deal",
-    icon: Plus,
-  },
-]
-
-const brokerNavItems = [
-  {
-    title: "Deals",
-    url: "/deals",
-    icon: FileText,
-  },
-  {
-    title: "Network",
-    url: "/network",
-    icon: Network,
-  },
-  {
-    title: "Market",
-    url: "/market",
-    icon: Globe,
-  },
-  {
-    title: "Files",
-    url: "/files",
-    icon: Folder,
-  },
+const platformNavItems = [
+  { title: "Deals", url: "/deals", icon: FileText },
+  { title: "Network", url: "/network", icon: Network },
+  { title: "Market", url: "/market", icon: Globe },
+  { title: "Files", url: "/files", icon: Folder },
 ]
 
 const sharedItems = [
@@ -111,82 +47,174 @@ const sharedItems = [
     title: "Vaults",
     url: "/vaults",
     icon: Vault,
+    tooltip: "The Vault Page is available to any user, showing any Vaults that user's email address was specifically invited to. It is role agnostic, and does not require an account or subscription.",
   },
 ]
 
-// Simple team data for the team switcher
-export const teams: Team[] = [
-  {
-    name: "BWE - Profile Switcher",
-    logo: Landmark,
-    plan: "BWE - Multiple Accounts",
-    types: ["Broker", "Lender"],
-    designOption: 1,
-    useCase: 'BWE',
-  },
-  {
-    name: "BWE - Profile Switcher 2",
-    logo: Landmark,
-    plan: "BWE - One Account",
-    types: ["Broker", "Lender"],
-    designOption: 1,
-    useCase: 'BWE',
-  },
-  {
-    name: "Convoy Capital",
-    logo: Building2,
-    plan: "Convoy - Multi-Team",
-    types: ["Broker"],
-    designOption: 1,
-    useCase: 'Convoy',
-  },
-]
+// Derive teams array directly from SCENARIOS — no hardcoding
+export const teams: Team[] = Object.keys(SCENARIOS).map((name) => ({
+  name,
+  logo: Building2,
+  plan: name,
+}))
+
+export const demoTeamUsers: Record<string, { id: string; name: string; email: string; avatar: any }[]> =
+  Object.fromEntries(
+    Object.entries(SCENARIOS).map(([name, scenario]) => [
+      name,
+      scenario.teamMembers.map((u) => ({
+        id: u.id,
+        name: u.name,
+        email: u.email,
+        avatar: u.avatar,
+      })),
+    ])
+  )
+
+function LenderProgramsNavItem() {
+  const { user, organization } = useActiveUser()
+  const [open, setOpen] = React.useState(false)
+
+  const userAccounts = getAccountsByUser(user, organization)
+
+  return (
+    <>
+      <SidebarGroup>
+        <SidebarGroupLabel>Lending</SidebarGroupLabel>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <SidebarMenuButton asChild onClick={() => setOpen(true)} className="cursor-pointer">
+                  <div>
+                    <Landmark />
+                    <span>Lender Programs</span>
+                  </div>
+                </SidebarMenuButton>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="max-w-xs">
+                Conditional on user's relation to an Org that has Lender Attributes. In the world without roles, any Org (like the Rente Group) could have Lender Attributes. Click for more details.
+              </TooltipContent>
+            </Tooltip>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarGroup>
+
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <div className="flex items-start justify-between gap-3">
+              <DialogTitle>Lender Programs</DialogTitle>
+              <span className="inline-flex shrink-0 items-center rounded-full bg-red-500/10 px-2.5 py-0.5 text-xs font-semibold text-red-600 border border-red-200">
+                NOT SCOPED
+              </span>
+            </div>
+            <DialogDescription className="leading-relaxed">
+              We can add Lender Attributes to any org in the backend. But to do this at scale, we need a way to draw the connection between the logged-in user and their belonging to an Org that has Lender Programs / Attributes. That connection could be via the Person record, the Account membership, or TBD — this is the open question.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="flex flex-col items-center gap-0">
+            {/* User card */}
+            <div className="w-full rounded-lg border bg-card">
+              <div className="flex items-center gap-3 p-4">
+                <div className="h-10 w-10 shrink-0 overflow-hidden rounded-full">
+                  <Image src={user.avatar} alt={user.name} width={40} height={40} className="h-full w-full object-cover" />
+                </div>
+                <div className="flex flex-1 flex-col gap-0.5">
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm font-semibold">{user.name}</span>
+                    <span className="font-mono text-xs rounded-md border bg-muted px-1.5 py-0.5">{user.userId}</span>
+                  </div>
+                  <span className="text-xs text-muted-foreground">{user.email}</span>
+                </div>
+              </div>
+              {userAccounts.length > 0 && (
+                <>
+                  <div className="border-t" />
+                  {userAccounts.map((account, i) => {
+                    const palette = getAccountPalette(account.id)
+                    const AccountIcon = palette.icon
+                    return (
+                      <div
+                        key={account.id}
+                        className={`flex items-center justify-between px-4 py-2 bg-muted/40${i < userAccounts.length - 1 ? ' border-b' : ''}`}
+                      >
+                        <div className="flex items-center gap-2">
+                          <div className={`flex h-5 w-5 shrink-0 items-center justify-center rounded ${palette.bg}`}>
+                            <AccountIcon className={`h-3 w-3 ${palette.text}`} />
+                          </div>
+                          <span className="text-xs font-medium">{account.name}</span>
+                        </div>
+                        {account.accountNumber && (
+                          <span className="font-mono text-xs text-muted-foreground">{account.accountNumber}</span>
+                        )}
+                      </div>
+                    )
+                  })}
+                </>
+              )}
+            </div>
+
+            {/* Dotted connector */}
+            <div className="flex flex-col items-center py-1">
+              <div className="w-px h-6 border-l-2 border-dashed border-border" />
+            </div>
+
+            {/* Org card */}
+            <div className="w-full rounded-lg border bg-card">
+              <div className="flex items-center gap-3 p-4">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border bg-muted">
+                  <span className="text-sm font-bold">{organization.logo}</span>
+                </div>
+                <div className="flex flex-1 flex-col gap-0.5">
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm font-semibold">{organization.name}</span>
+                    <span className="font-mono text-xs rounded-md border bg-muted px-1.5 py-0.5">Org {organization.orgId}</span>
+                  </div>
+                  {organization.hasLenderPrograms && (
+                    <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                      <Landmark className="h-3 w-3" />
+                      Has Lender Programs
+                    </div>
+                  )}
+                </div>
+              </div>
+              <div className="border-t" />
+              <div className="flex items-center justify-between px-4 py-2 bg-muted/40">
+                <span className="text-xs font-medium">Lender Programs</span>
+                <span className="font-mono text-xs text-muted-foreground">3</span>
+              </div>
+            </div>
+
+            {/* Lender Search scope note */}
+            <div className="flex flex-col items-start mt-2">
+              <p className="text-xs font-semibold text-foreground mb-2">Adding Lenders from Lender Search shows:</p>
+              <ul className="space-y-2 text-xs text-muted-foreground">
+                <li>
+                  <strong className="text-foreground">Suggested:</strong> Any Lender that we've created as an org with Lender Attributes. They may have never been matched, never been added as a Private Company — but the Org exists with Lender Attributes.
+                </li>
+                <li>
+                  <strong className="text-foreground">My Network:</strong> Any Lender that you've said is a Lender at the Private Company level.
+                </li>
+              </ul>
+              <p className="text-xs text-muted-foreground mt-3 pt-3 border-t border-dashed">
+                That is the scope of people eligible to see and edit Lender Programs.
+              </p>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </>
+  )
+}
 
 export function AppSidebar() {
-  const { user, organization } = useActiveUser()
-  const { activeRole, setActiveRole } = useActiveRole()
+  const { user, organization, activeAccount, setActiveAccountId } = useActiveUser()
   const { activeTeam, setActiveTeam } = useTeam()
-  
-  // Get user's accounts
+
   const userAccounts = getAccountsByUser(user, organization)
-  
-  // Extract available roles from accounts (handling both single and array types)
-  const availableRoles: AccountType[] = Array.from(
-    new Set(
-      userAccounts.flatMap(acc => 
-        Array.isArray(acc.type) ? acc.type : [acc.type]
-      )
-    )
-  )
-  
-  // Navigation items based on active role
-  const platformItems = activeRole === 'broker' ? brokerNavItems : []
-  const actions = activeRole === 'broker' ? actionItems : []
-  
-  // Shared items - Lending Profile only for lenders
-  const sharedItemsForRole = activeRole === 'lender' 
-    ? [
-        ...sharedItems,
-        {
-          title: "Lending Profile",
-          url: "/lending-profile",
-          icon: Landmark,
-        },
-      ]
-    : sharedItems
-
-  // User data for footer
-  const currentUser = {
-    name: user.name,
-    email: user.email,
-    avatar: user.avatar,
-    teamIcon: Landmark,
-  }
-
-  const roleLabels: Record<AccountType, string> = {
-    broker: 'Broker',
-    lender: 'Lender',
-  }
+  const hasSubscription = activeAccount?.subscription ?? false
 
   return (
     <Sidebar variant="inset">
@@ -194,19 +222,30 @@ export function AppSidebar() {
         <TeamSwitcher teams={teams} activeTeam={activeTeam} onTeamChange={setActiveTeam} />
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={platformItems} label="Platform" linkComponent={Link} />
-        {actions.length > 0 && <NavMain items={actions} label="Actions" linkComponent={Link} />}
-        <NavMain items={sharedItemsForRole} label="Shared with Me" linkComponent={Link} />
+        <NavMain
+          items={platformNavItems}
+          label="Platform"
+          linkComponent={Link}
+          disabled={!hasSubscription}
+          showAccessTooltips={hasSubscription}
+        />
+        <NavMain items={sharedItems} label="Shared with Me" linkComponent={Link} />
+        {organization.hasLenderPrograms && <LenderProgramsNavItem />}
       </SidebarContent>
       <SidebarFooter>
-        <NavUser 
-          user={currentUser}
-          subhead={availableRoles.length > 1 ? roleLabels[activeRole] : undefined}
-          profileSwitcher={availableRoles.length > 1 ? {
-            availableProfiles: availableRoles,
-            activeProfile: activeRole,
-            onProfileChange: setActiveRole,
-          } : undefined}
+        <div className="flex flex-col gap-0.5 px-2 pb-1">
+          <Link href="#" className="rounded-md px-2 py-1.5 text-xs text-sidebar-foreground/60 hover:bg-sidebar-accent hover:text-sidebar-foreground transition-colors">
+            Trust Center
+          </Link>
+          <Link href="#" className="rounded-md px-2 py-1.5 text-xs text-sidebar-foreground/60 hover:bg-sidebar-accent hover:text-sidebar-foreground transition-colors">
+            Map Builder
+          </Link>
+        </div>
+        <NavUser
+          user={{ name: user.name, email: user.email, avatar: user.avatar }}
+          activeAccount={activeAccount}
+          availableAccounts={userAccounts.length > 1 ? userAccounts : undefined}
+          onAccountChange={setActiveAccountId}
           onSignOut={() => console.log("Sign out")}
         />
       </SidebarFooter>
