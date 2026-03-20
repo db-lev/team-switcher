@@ -350,7 +350,7 @@ function UseCaseView() {
                             )}
                           </TooltipTrigger>
                           <TooltipContent side="bottom" className="max-w-xs">
-                            Traditional Lev Subscription that all current customers are on
+                            Traditional Lev Subscription that all current customers are on. Includes full access to Deals, Network, Market, Files, and Originate — no separate credits needed.
                           </TooltipContent>
                         </Tooltip>
                         <Tooltip>
@@ -371,7 +371,7 @@ function UseCaseView() {
                             )}
                           </TooltipTrigger>
                           <TooltipContent side="bottom" className="max-w-xs">
-                            The free subscription given to anybody who signs up for Lev Originate, gives them 100 credits to use for free.
+                            Granted to new users who sign up for Lev Originate without a Legacy Subscription — gives 100 free credits to try the feature. Legacy Subscription customers don&apos;t need this; Originate is already included in their plan.
                           </TooltipContent>
                         </Tooltip>
                       </div>

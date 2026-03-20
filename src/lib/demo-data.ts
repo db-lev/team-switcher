@@ -99,7 +99,7 @@ const convoyOrg: Organization = {
       location: '3344 Peachtree Road NE, Atlanta, GA 30326',
       about: 'Convoy Capital Brokerage handles commercial real estate debt placement across the Southeast.',
       legacySubscription: true,
-      creditsFree100: true,
+      creditsFree100: false,
     },
     {
       id: 'convoy-nyc',
@@ -110,7 +110,7 @@ const convoyOrg: Organization = {
       location: '3344 Peachtree Road NE, Atlanta, GA 30326',
       about: 'Convoy Capital Lending evaluates and directly underwrites commercial real estate transactions.',
       legacySubscription: true,
-      creditsFree100: true,
+      creditsFree100: false,
     },
   ],
 }
@@ -153,7 +153,7 @@ const customOrg: Organization = {
       location: '200 Park Avenue, New York, NY 10166',
       about: 'Custom Capital is a boutique commercial real estate brokerage operating in the Northeast.',
       legacySubscription: true,
-      creditsFree100: true,
+      creditsFree100: false,
     },
   ],
 }

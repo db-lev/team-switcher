@@ -219,8 +219,8 @@ export function AppSidebar() {
       title: "Originate",
       url: "/originate",
       icon: Sparkles,
-      disabled: !hasCredits,
-      tooltip: "Eligible to anyone with an account, which anyone can make. Creating an account instantly grants you 100 credits on a free subscription.",
+      disabled: !hasLegacySubscription && !hasCredits,
+      tooltip: "Accessible to Legacy Subscription customers (included in their plan) and to anyone with FreeCredits100. New users who create an account get 100 free credits to try Originate — no legacy subscription needed.",
     },
   ]
 
