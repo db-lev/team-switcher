@@ -32,7 +32,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog"
-import { Folder, Network, Globe, FileText, Vault, Building2, Landmark, Sparkles } from "lucide-react"
+import { Folder, Network, Globe, FileText, Vault, Building2, Landmark, Sparkles, BookOpen } from "lucide-react"
 import { SCENARIOS, getAccountsByUser, getAccountPalette } from "@/lib/demo-data"
 
 const sharedItems = [
@@ -242,6 +242,10 @@ export function AppSidebar() {
       </SidebarContent>
       <SidebarFooter>
         <div className="flex flex-col gap-0.5 px-2 pb-1">
+          <Link href="/migration-guide" className="flex items-center gap-2 rounded-md px-2 py-1.5 text-xs text-sidebar-foreground/60 hover:bg-sidebar-accent hover:text-sidebar-foreground transition-colors">
+            <BookOpen className="h-3.5 w-3.5" />
+            Migration Guide
+          </Link>
           <Link href="#" className="rounded-md px-2 py-1.5 text-xs text-sidebar-foreground/60 hover:bg-sidebar-accent hover:text-sidebar-foreground transition-colors">
             Trust Center
           </Link>
